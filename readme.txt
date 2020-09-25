@@ -1,7 +1,7 @@
 === Autentify anti fraud for WooCommerce ===
-Contributors: autentify
+Contributors: autentify, joaovitorbarbosa
 Tags: fraud, antifraud, woocommerce, safety, artificial, intelligence, analyze
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 Requires at least: 4.7
 Tested up to: 5.5
 Requires PHP: 5.6
@@ -10,7 +10,7 @@ WC tested up to: 4.5.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-== Descrição ==
+== Description ==
 AUTENTIFY é uma plataforma de prevenção a fraude em tempo real que ajuda comerciantes de todos os tamanhos na tomada de decisão. Este plugin se integra diretamente à plataforma AUTENTIFY e permite que os comerciantes comecem a combater a fraude imediatamente.
 
 = Score de usuários em tempo real =
@@ -29,7 +29,7 @@ Utilize nossa validação biométrica facial como etapas extras de verificação
 
 O AUTENTIFY é um serviço pré-pago com preços flexíveis com base no número de consultas recebidas por mês. Uma conta AUTENTIFY separada é necessária para liberação do token e utilização das consultas. Após o período de teste gratuito de 30 dias, o preço começa em R$ 49,90 por mês. Para obter mais informações sobre preços, visite https://www.autentify.com.br/precos.
 
-== Instalação ==
+== Installation ==
 
 = Instalação do plugin: =
 
