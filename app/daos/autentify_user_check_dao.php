@@ -28,13 +28,13 @@ class Autentify_User_Check_DAO {
 		$url = $this->api->get_base_url() . "/v1/user_checks";
     
 		$post_body = array(
-			'emails'    => implode(',', $emails)
+			'emails'    => json_encode( $emails )
 		);
 
 		$args = array(
 			'body'        => $post_body,
 			'timeout'     => '10',
-      'headers' => array(
+      'headers'     => array(
         'Authorization' => 'Bearer ' . $this->auth->get_bearer_token()
       )
 		);
@@ -72,9 +72,10 @@ class Autentify_User_Check_DAO {
       array_push(
         $user_checks, $obj->email
       );
-      $user_checks[$obj->email] = new Autentify_User_Check( $obj->id, $obj->email, $obj->score, $obj->score_msg,
-        $obj->facial_biometric_validation_status, $obj->created_at,
-        $obj->updated_at
+
+      $user_checks[$obj->email] = new Autentify_User_Check(
+        $obj->id, $obj->email, $obj->score, $obj->score_msg,
+        $obj->created_at, $obj->updated_at
       );
     }
     

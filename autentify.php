@@ -139,7 +139,7 @@ function autentify_fail_api_connection() {
  * @return void
  */
 function autentify_fail_authentication() {
-	$message = 'Autentify não conseguiu validar corretamente o API Token definido nas configurações para gerar corretamente o Bearer Token. Entre em nosso painel, e verifique se o API Token foi copiado corretamente: <a href="https://painel.autentify.com.br/developers/api_token" target="_blank">www.painel.autentify.com.br/developers/api_token</a>';
+	$message = 'Autentify não conseguiu validar o API Token definido nas configurações para gerar o Bearer Token. Entre em nosso painel, e verifique se o API Token foi copiado corretamente: <a href="https://painel.autentify.com.br/developers/api_token" target="_blank">www.painel.autentify.com.br/developers/api_token</a>';
 	$html_message = sprintf( '<div class="error">%s</div>', wpautop( $message ) );
 	echo wp_kses_post( $html_message );
 }

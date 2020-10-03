@@ -5,17 +5,15 @@ class Autentify_User_Check {
   private $email;
   private $score;
   private $score_msg;
-  private $facial_biometric_validation_status;
   private $created_at;
   private $updated_at;
 
   public function __construct( $id, $email, $score, $score_msg,
-    $facial_biometric_validation_status, $created_at, $updated_at ) {
+    $created_at, $updated_at ) {
     $this->id = $id;
     $this->email = $email;
     $this->score = $score;
     $this->score_msg = $score_msg;
-    $this->facial_biometric_validation_status = $facial_biometric_validation_status;
     $this->created_at = $created_at;
     $this->updated_at = $updated_at;
   }
