@@ -73,8 +73,11 @@ Por favor, caso você tenha algum problema com o funcionamento do plugin, [abra 
 
 == Changelog ==
 
+= 1.0.2 - 2020-10-03 =
+* Update the way to send user checks by API.
+
 = 1.0.1 - 2020-09-25 =
-* Initial Update language files
+* Update language files
 
 = 1.0.0 - 2020-09-25 =
 * Initial Public Beta Release
