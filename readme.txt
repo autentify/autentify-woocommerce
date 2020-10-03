@@ -1,7 +1,7 @@
 === Autentify anti fraud for WooCommerce ===
 Contributors: autentify, joaovitorbarbosa
 Tags: fraud, antifraud, woocommerce, safety, artificial, intelligence, analyze
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 Requires at least: 4.7
 Tested up to: 5.5
 Requires PHP: 5.6
