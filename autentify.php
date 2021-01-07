@@ -6,12 +6,12 @@
  * Plugin Name:       		Autentify anti fraud for WooCommerce
  * Plugin URI:        		https://www.autentify.com.br/plugins/woocommerce/
  * Description:       		O melhor plugin para combater antifraude em e-commerces. Ágil e inteligente para analisar dados usando interligência artificial de forma avançada para definir o risco de cada venda em tempo real.
- * Version:           		1.0.2
+ * Version:           		1.0.3
  * Requires at least: 		4.7
- * Tested up to: 					5.5
+ * Tested up to: 					5.6
  * Requires PHP:      		5.6
  * WC requires at least: 	3.3
- * WC tested up to: 			4.5.2
+ * WC tested up to: 			4.8
  * Author:            		Autentify
  * Author URI:        		https://autentify.com.br/
  * License:           		GPL v3 or later
@@ -39,7 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'AUTENTIFY_VERSION', '1.0.0' );
+define( 'AUTENTIFY_VERSION', '1.0.3' );
 
 define( 'AUTENTIFY__FILE__', __FILE__ );
 define( 'AUTENTIFY_PLUGIN_BASE', plugin_basename( AUTENTIFY__FILE__ ) );
@@ -53,9 +53,10 @@ define( 'AUTENTIFY_ASSETS_URL', AUTENTIFY_URL . 'assets/' );
 
 define( 'AUTENTIFY_API_TOKEN', get_option( 'autentify_api_token' ) );
 
-require_once 'includes/admin-menu.php';
+require_once(AUTENTIFY_PATH . 'app/models/autentify_api.php' );
+require_once( AUTENTIFY_PATH . 'app/models/autentify_auth.php' );
 
-require_once(AUTENTIFY_PATH . 'app/models/autentify_api.php');
+require_once 'includes/admin-menu.php';
 
 if ( ! version_compare( PHP_VERSION, '5.6', '>=' ) ) {
 	add_action( 'admin_notices', 'autentify_fail_php_version' );
@@ -69,7 +70,6 @@ if ( ! version_compare( PHP_VERSION, '5.6', '>=' ) ) {
 	add_action( 'admin_notices', 'autentify_fail_api_connection' );
 } else {
 	require_once( AUTENTIFY_PATH . 'app/models/autentify_email_helper.php' );
-	require_once( AUTENTIFY_PATH . 'app/models/autentify_auth.php' );
 
 	if ( ! Autentify_Auth::get_instance()->is_authenticated() ) {
 		add_action( 'admin_notices', 'autentify_fail_authentication' );
