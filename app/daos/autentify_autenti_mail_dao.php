@@ -34,14 +34,14 @@ class Autentify_Autenti_Mail_DAO {
 
     $cpf = Autentify_Cpf_Helper::get_instance()->format( $cpf );
 
-    if ( !empty($cpf) ) {
+    if ( ! empty( $cpf ) ) {
       $request_body['cpf'] = $cpf;
     }
 
 		$args = array(
-			'body'        => $request_body,
-			'timeout'     => '10',
-      'headers'     => array(
+			'body'            => $request_body,
+			'timeout'         => '10',
+      'headers'         => array(
         'Authorization' => 'Bearer ' . $this->auth->get_bearer_token()
       )
 		);

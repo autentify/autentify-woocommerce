@@ -19,8 +19,8 @@ class Autentify_Cpf_Helper {
    * @return String with The formatted object.
    */
   public function format( $cpf ) {
-    $cpf = trim($cpf);
-    if ( $cpf == null || empty($cpf) ) return $cpf;
+    $cpf = trim( $cpf );
+    if ( $cpf == null || empty( $cpf ) ) return $cpf;
 
     $cpf = preg_replace( "/[^0-9]/", "", $cpf );
     $cpf = strval( (int) $cpf );
