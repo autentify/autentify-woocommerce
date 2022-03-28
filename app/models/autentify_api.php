@@ -29,23 +29,29 @@ class Autentify_Api {
   public function get_error_messsage( $code ) {
     switch ( $code ) {
       case 1:
-        return "Erro interno do servidor.";
+        return 'Erro interno do servidor.';
       case 2:
-        return "API Token inválido.";
+        return 'API Token inválido.';
       case 3:
-        return "Token Bearer inválido.";
+        return 'Token Bearer inválido.';
       case 4:
-        return "Data de pesquisa inválida";
+        return 'Data de pesquisa inválida.';
       case 5:
-        return "Você precisa de pelo menos 1 e-mail para realizar a(s) consulta(s).";
+        return 'Você precisa de pelo menos 1 e-mail para realizar a(s) consulta(s).';
       case 6:
-        return "E-mail(s) inválido(s).";
+        return 'E-mail(s) inválido(s).';
       case 7:
-        return "Um ou mais e-mails que você está tentando consultar já pertence a sua lista de e-mail consultados. Tente novamente, por favor.";
+        return 'Um ou mais e-mails que você está tentando consultar já pertence a sua lista de e-mail consultados. Tente novamente, por favor.';
       case 8:
-        return "Você não tem crédito suficiente para realizar a ação desejada. Para adquirir mais créditos visite: <a href='https://www.painel.autentify.com.br' target='_blank'>www.painel.autentify.com.br</a>";
+        return 'Você não tem crédito suficiente para realizar a ação desejada. Para adquirir mais créditos visite: <a href="https://www.painel.autentify.com.br" target="_blank">www.painel.autentify.com.br</a>';
+      case 13:
+        return 'Dados de consulta inválidos.';
+      case 16:
+        return 'E-mail inválido.';
+      case 17:
+        return 'CPF inválido.';
       default:
-        return "Erro não identificado. Por favor, Espere alguns minutos e tente novamente.";
+        return 'Erro não identificado. Por favor, Espere alguns minutos e tente novamente.';
     }
   }
 
