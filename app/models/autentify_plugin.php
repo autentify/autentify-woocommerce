@@ -37,8 +37,8 @@ class Autentify_Plugin {
 				unset( $new_columns['order_actions'] );
 				unset( $new_columns['order_total'] );
 
-				$new_columns['autentify_score'] = 'Score';
-				$new_columns['autentify_score_msg'] = 'Score Status';
+				$new_columns['autentify_autenti_mail_score'] = 'Score';
+				$new_columns['autentify_autenti_mail_score_msg'] = 'Score Status';
 				$new_columns['order_actions'] = $columns['order_actions'];
 				$new_columns['order_total'] = 'Total';
 
@@ -67,16 +67,16 @@ class Autentify_Plugin {
 				$has_autenti_mail = isset( $autenti_mail ) && !empty( $autenti_mail );;
 
 				if ( $has_autenti_mail ) {
-					if ( $column == 'autentify_score' ) {
+					if ( $column == 'autentify_autenti_mail_score' ) {
 						echo Autentify_Score_Helper::get_instance()->get_status_html($autenti_mail->risk_score);
-					} elseif ( $column == 'autentify_score_msg' ) {
+					} elseif ( $column == 'autentify_autenti_mail_score_msg' ) {
 						echo Autentify_Score_Helper::get_instance()->get_risk_score_msg($autenti_mail->risk_score_msg);
 					}
 				} else {
-					if ( $column == 'autentify_score' ) {
+					if ( $column == 'autentify_autenti_mail_score' ) {
 						echo $check_btn;
 					}
-					if ( $column == 'autentify_score_msg' ) {
+					if ( $column == 'autentify_autenti_mail_score_msg' ) {
 
 						echo "<span data-autentify-score-msg-email='$email'>Não Solicitada</span>";
 					}
