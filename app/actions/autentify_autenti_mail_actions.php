@@ -1,6 +1,6 @@
 <?php
 
-/** User Check Single POST */
+/** AutentiMail POST */
 if ( ! function_exists( 'autentify_autenti_mail_post' ) ) {
   function autentify_autenti_mail_post() {
     if ( ! ( $_SERVER['REQUEST_METHOD'] === 'POST' ) ) {
