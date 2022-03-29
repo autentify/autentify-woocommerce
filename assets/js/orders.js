@@ -1,4 +1,4 @@
-function startIndividualCheck( email, adminAjaxUrl ) {
+function startIndividualCheck( orderId, email, adminAjaxUrl ) {
   var check = confirm( "Realmente deseja inicializar essa consulta?" );
 
   if ( ! check ) return;
@@ -8,25 +8,28 @@ function startIndividualCheck( email, adminAjaxUrl ) {
 
   jQuery( "#autentify-notice" ).remove();
   jQuery.ajax( {
-      url : adminAjaxUrl,
-      type : 'POST',
-      data : {
-          action : 'autentify_autenti_mail_post',
-          param1: email
-      },
-      success : function( response ) {
-        response = JSON.parse( response );
-        var success = response['success'] == true;
-        if ( success ) {
-          updateAfterIndividualCheckSuccess( response['email'] );
-          jQuery( '#wpbody-content .wrap ul' )
-            .before( '<div id="autentify-notice" class="notice notice-success"><p>' + response['message'] + '</p></div>' );
-        } else {
-          updateAfterIndividualCheckFail( email, outerHTMLBckp );
-          jQuery( '#wpbody-content .wrap ul' )
-            .before( '<div id="autentify-notice" class="notice notice-error"><p>' + response['message'] + '</p></div>' );
-        }
+    url : adminAjaxUrl,
+    type : 'POST',
+    data : {
+      action : 'autentify_autenti_mail_post',
+      param1 : orderId,
+      param2 : email,
+    },
+    success : function( response ) {
+      console.log("response", response);
+
+      response = JSON.parse( response );
+      var success = response['success'] == true;
+      if ( success ) {
+        updateAfterIndividualCheckSuccess( response['email'] );
+        jQuery( '#wpbody-content .wrap ul' )
+          .before( '<div id="autentify-notice" class="notice notice-success"><p>' + response['message'] + '</p></div>' );
+      } else {
+        updateAfterIndividualCheckFail( email, outerHTMLBckp );
+        jQuery( '#wpbody-content .wrap ul' )
+          .before( '<div id="autentify-notice" class="notice notice-error"><p>' + response['message'] + '</p></div>' );
       }
+    }
   } );
 }
 
