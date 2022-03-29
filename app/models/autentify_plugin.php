@@ -53,30 +53,31 @@ class Autentify_Plugin {
 			function autentify_set_order_column_values( $column ) {
 				global $post;
 
-				$user_checks = Autentify_User_Check_DAO::get_instance()->get_all();
 				$order = wc_get_order( $post->ID );
 				$email = $order->get_billing_email();
 				$has_email = isset( $email ) && !empty( $email );
 				$admin_ajax_url = admin_url( "admin-ajax.php" );
 
-				$is_checked_email = array_key_exists( $email, $user_checks );
-
-				$check_btn_with_email = "<a href='#' class='button button-primary' data-autentify-score-email='$email' onclick='startIndividualCheck(\"$email\",\"$admin_ajax_url\")'>Iniciar Consulta</a>";
+				$check_btn_with_email = "<a href='#' class='button button-primary' data-autentify-score-email='$email'"
+						. "onclick='startIndividualCheck(\"$order->ID\", \"$email\",\"$admin_ajax_url\")'>Iniciar Consulta</a>";
 				$check_btn_without_email = "Sem e-mail";
 				$check_btn = $has_email ? $check_btn_with_email : $check_btn_without_email;
 
-				if ( $is_checked_email ) {
-					$user_check = $user_checks[$email];
+				$autenti_mail = get_post_meta( $order->id, 'autenti_mail', true );
+				$has_autenti_mail = isset( $autenti_mail ) && !empty( $autenti_mail );;
+
+				if ( $has_autenti_mail ) {
 					if ( $column == 'autentify_score' ) {
-						echo $user_check->get_html_score();
+						echo Autentify_Score_Helper::get_instance()->get_status_html($autenti_mail->risk_score);
 					} elseif ( $column == 'autentify_score_msg' ) {
-						echo $user_check->get_score_msg();
+						echo Autentify_Score_Helper::get_instance()->get_risk_score_msg($autenti_mail->risk_score_msg);
 					}
 				} else {
 					if ( $column == 'autentify_score' ) {
 						echo $check_btn;
 					}
 					if ( $column == 'autentify_score_msg' ) {
+
 						echo "<span data-autentify-score-msg-email='$email'>Não Solicitada</span>";
 					}
 				}
