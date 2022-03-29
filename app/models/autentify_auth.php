@@ -33,7 +33,7 @@ class Autentify_Auth {
 			'timeout'     => '10',
 		);
 
-		$url = $this->api->get_base_url() . "/v1/auth";
+		$url = $this->api->get_base_url() . "/v2/auth";
 		$response = wp_remote_post( $url, $args );
 		$body = json_decode( wp_remote_retrieve_body( $response ) );
 

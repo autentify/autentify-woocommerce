@@ -58,7 +58,7 @@ class Autentify_Api {
   public function is_available() {
     if ( isset( $this->is_available ) ) return $this->is_available;
 
-    $url = $this->get_base_url() . "/v1/status";
+    $url = $this->get_base_url() . "/v2/status";
 
     // Check, if a valid url is provided
     if( ! filter_var( $url, FILTER_VALIDATE_URL ) ){
