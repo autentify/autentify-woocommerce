@@ -71,6 +71,7 @@ if ( ! version_compare( PHP_VERSION, '5.6', '>=' ) ) {
 } else {
 	require_once( AUTENTIFY_PATH . 'app/helpers/autentify_email_helper.php' );
 	require_once( AUTENTIFY_PATH . 'app/helpers/autentify_cpf_helper.php' );
+	require_once( AUTENTIFY_PATH . 'app/helpers/autentify_score_helper.php' );
 
 	if ( ! Autentify_Auth::get_instance()->is_authenticated() ) {
 		add_action( 'admin_notices', 'autentify_fail_authentication' );
