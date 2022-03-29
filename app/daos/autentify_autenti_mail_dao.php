@@ -23,7 +23,7 @@ class Autentify_Autenti_Mail_DAO {
    * @param $cpf String that contains the CPF.
    * @return a success or an error object.
    */
-  public function check( $email, $cpf ) {
+  public function check( $email, $cpf = null) {
     $curl = curl_init();
     
 		$url = $this->api->get_base_url() . '/v2/autenti_mails';
