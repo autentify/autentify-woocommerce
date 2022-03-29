@@ -11,7 +11,7 @@ function startIndividualCheck( email, adminAjaxUrl ) {
       url : adminAjaxUrl,
       type : 'POST',
       data : {
-          action : 'autentify_user_check_post',
+          action : 'autentify_autenti_mail_post',
           param1: email
       },
       success : function( response ) {
