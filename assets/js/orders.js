@@ -21,7 +21,7 @@ function startIndividualCheck( orderId, email, adminAjaxUrl ) {
       response = JSON.parse( response );
       var success = response['success'] == true;
       if ( success ) {
-        updateAfterIndividualCheckSuccess( response['email'] );
+        updateAfterIndividualCheckSuccess( response['autenti_mail'] );
         jQuery( '#wpbody-content .wrap ul' )
           .before( '<div id="autentify-notice" class="notice notice-success"><p>' + response['message'] + '</p></div>' );
       } else {
@@ -35,7 +35,7 @@ function startIndividualCheck( orderId, email, adminAjaxUrl ) {
 
 function updateBeforeIndividual( email ) {
   jQuery( "a[data-autentify-score-email='" + email + "']" ).each( function() {
-    jQuery( this ).replaceWith( "<span data-autentify-score-email='" + email + "'>Inicializando...</span>" );
+    jQuery( this ).replaceWith( "<span data-autentify-score-email='" + email + "'>Consultando...</span>" );
   });
 }
 
@@ -45,11 +45,11 @@ function updateAfterIndividualCheckFail( email, outerHTMLBckp ) {
   });
 }
 
-function updateAfterIndividualCheckSuccess( email ) {
-  jQuery( "span[data-autentify-score-email='" + email + "']" ).each( function() {
-    jQuery( this ).replaceWith( "Aguardando..." );
+function updateAfterIndividualCheckSuccess( autentiMail ) {
+  jQuery( "span[data-autentify-score-email='" + autentiMail["email"] + "']" ).each( function() {
+    jQuery( this ).replaceWith( autentiMail["risk_score_html"] );
   });
-  jQuery( "span[data-autentify-score-msg-email='" + email + "']" ).each( function() {
-    jQuery( this ).replaceWith( "Pendente" );
+  jQuery( "span[data-autentify-score-msg-email='" +  autentiMail["email"] + "']" ).each( function() {
+    jQuery( this ).replaceWith( autentiMail["risk_score_msg_pt_br"] );
   });
 }

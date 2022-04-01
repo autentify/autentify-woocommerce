@@ -68,9 +68,9 @@ class Autentify_Plugin {
 
 				if ( $has_autenti_mail ) {
 					if ( $column == 'autentify_autenti_mail_score' ) {
-						echo Autentify_Score_Helper::get_instance()->get_status_html($autenti_mail->risk_score);
+						echo Autentify_Score_Helper::get_instance()->get_status_html( $autenti_mail->risk_score );
 					} elseif ( $column == 'autentify_autenti_mail_score_msg' ) {
-						echo Autentify_Score_Helper::get_instance()->get_risk_score_msg($autenti_mail->risk_score_msg);
+						echo Autentify_Score_Helper::get_instance()->get_risk_score_msg( $autenti_mail->risk_score_msg );
 					}
 				} else {
 					if ( $column == 'autentify_autenti_mail_score' ) {
