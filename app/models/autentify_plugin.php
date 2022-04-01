@@ -63,14 +63,15 @@ class Autentify_Plugin {
 				$check_btn_without_email = "Sem e-mail";
 				$check_btn = $has_email ? $check_btn_with_email : $check_btn_without_email;
 
-				$autenti_mail = get_post_meta( $order->id, 'autenti_mail', true );
-				$has_autenti_mail = isset( $autenti_mail ) && !empty( $autenti_mail );;
+				$autenti_mail_post_meta = get_post_meta( $order->id, 'autenti_mail', true );
+				$has_autenti_mail = isset( $autenti_mail_post_meta ) && !empty( $autenti_mail_post_meta );
 
 				if ( $has_autenti_mail ) {
+					$autenti_mail = new Autentify_Autenti_Mail($autenti_mail_post_meta);
 					if ( $column == 'autentify_autenti_mail_score' ) {
-						echo Autentify_Score_Helper::get_instance()->get_status_html( $autenti_mail->risk_score );
+						echo $autenti_mail->get_risk_score_html();
 					} elseif ( $column == 'autentify_autenti_mail_score_msg' ) {
-						echo Autentify_Score_Helper::get_instance()->get_risk_score_msg( $autenti_mail->risk_score_msg );
+						echo $autenti_mail->get_risk_score_msg_pt_br();
 					}
 				} else {
 					if ( $column == 'autentify_autenti_mail_score' ) {

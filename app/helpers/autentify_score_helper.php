@@ -12,7 +12,7 @@ class Autentify_Score_Helper {
     return self::$instance;
   }
 
-  public function get_status_html($score) {
+  public function get_risk_score_html($score) {
     $css_color = Autentify_Score_Helper::get_instance()->get_risk_score_css_color($score);
     $html_score = "<span style='color: #" . $css_color . ";'>$score</span>";
     return $html_score;
