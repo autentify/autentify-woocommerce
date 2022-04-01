@@ -52,4 +52,17 @@ class Autentify_Autenti_Mail {
 
     return $translated_risk_score_msg;
   }
+
+  public function to_json() {
+    return [
+      "id" => $this->id,
+      "email" => $this->email,
+      "risk_score" => $this->risk_score,
+      "risk_score_html" => $this->get_risk_score_html(),
+      "risk_score_msg" => $this->risk_score_msg,
+      "risk_score_msg_pt_br" => $this->get_risk_score_msg_pt_br(),
+      "created_at" => $this->created_at,
+      "updated_at" => $this->updated_at
+    ];
+  }
 }
