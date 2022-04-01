@@ -3,8 +3,9 @@ function startIndividualCheck( orderId, email, adminAjaxUrl ) {
 
   if ( ! check ) return;
 
-  var outerHTMLBckp = jQuery( "a[data-autentify-score-email='" + email +"']" )[0].outerHTML;
-  updateBeforeIndividual( email );
+  var orderTd = jQuery( `#post-${orderId} > td.column-autentify_autenti_mail_score` )[0];
+  var oldInnerHTML = orderTd.innerHTML;
+  updateBeforeIndividual( orderTd );
 
   jQuery( "#autentify-notice" ).remove();
   jQuery.ajax( {
@@ -16,16 +17,14 @@ function startIndividualCheck( orderId, email, adminAjaxUrl ) {
       param2 : email,
     },
     success : function( response ) {
-      console.log("response", response);
-
       response = JSON.parse( response );
       var success = response['success'] == true;
       if ( success ) {
-        updateAfterIndividualCheckSuccess( response['autenti_mail'] );
+        updateAfterIndividualCheckSuccess( orderId, orderTd, response['autenti_mail'] );
         jQuery( '#wpbody-content .wrap ul' )
           .before( '<div id="autentify-notice" class="notice notice-success"><p>' + response['message'] + '</p></div>' );
       } else {
-        updateAfterIndividualCheckFail( email, outerHTMLBckp );
+        updateAfterIndividualCheckFail( orderTd, oldInnerHTML );
         jQuery( '#wpbody-content .wrap ul' )
           .before( '<div id="autentify-notice" class="notice notice-error"><p>' + response['message'] + '</p></div>' );
       }
@@ -33,23 +32,15 @@ function startIndividualCheck( orderId, email, adminAjaxUrl ) {
   } );
 }
 
-function updateBeforeIndividual( email ) {
-  jQuery( "a[data-autentify-score-email='" + email + "']" ).each( function() {
-    jQuery( this ).replaceWith( "<span data-autentify-score-email='" + email + "'>Consultando...</span>" );
-  });
+function updateBeforeIndividual( orderTd ) {
+  orderTd.innerHTML = "Consultando...";
 }
 
-function updateAfterIndividualCheckFail( email, outerHTMLBckp ) {
-  jQuery( "span[data-autentify-score-email='" + email + "']" ).each( function() {
-    jQuery( this ).replaceWith( outerHTMLBckp );
-  });
+function updateAfterIndividualCheckFail( orderTd, oldInnerHTML ) {
+  orderTd.innerHTML = oldInnerHTML;
 }
 
-function updateAfterIndividualCheckSuccess( autentiMail ) {
-  jQuery( "span[data-autentify-score-email='" + autentiMail["email"] + "']" ).each( function() {
-    jQuery( this ).replaceWith( autentiMail["risk_score_html"] );
-  });
-  jQuery( "span[data-autentify-score-msg-email='" +  autentiMail["email"] + "']" ).each( function() {
-    jQuery( this ).replaceWith( autentiMail["risk_score_msg_pt_br"] );
-  });
+function updateAfterIndividualCheckSuccess( orderId, orderTd, autentiMail ) {
+  orderTd.innerHTML = autentiMail["risk_score_html"];
+  jQuery( `#post-${orderId} > td.column-autentify_autenti_mail_score_msg` )[0].innerHTML = autentiMail["risk_score_msg_pt_br"];
 }
