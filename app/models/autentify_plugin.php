@@ -11,7 +11,6 @@ class Autentify_Plugin {
 		$this->load_js_files();
 		$this->set_order_columns();
 		$this->set_order_column_values();
-		$this->set_autentify_user_check_post_bulk_option();
 	}
 
   public static function get_instance() {
@@ -84,16 +83,6 @@ class Autentify_Plugin {
 				}
 			}
 			add_action( 'manage_shop_order_posts_custom_column', 'autentify_set_order_column_values', 2 );
-		}
-	}
-
-	private function set_autentify_user_check_post_bulk_option() {
-		if ( ! function_exists( 'autentify_user_check_post_bulk' ) ) {
-			function autentify_user_check_post_bulk( $actions ) {
-				$actions['autentify_user_check_post_bulk'] = __( 'Iniciar Consultas (Autentify)', 'woocommerce' );
-				return $actions;
-			}
-			add_filter( 'bulk_actions-edit-shop_order', 'autentify_user_check_post_bulk', 20, 1 );
 		}
 	}
 }
