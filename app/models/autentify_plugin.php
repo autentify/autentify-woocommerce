@@ -58,11 +58,6 @@ class Autentify_Plugin {
 				$has_email = isset( $email ) && !empty( $email );
 				$admin_ajax_url = admin_url( "admin-ajax.php" );
 
-				$check_btn_with_email = "<a href='#' class='button button-primary'"
-					 . "onclick='startIndividualCheck(\"$order->ID\", \"$email\",\"$admin_ajax_url\")'>Iniciar Consulta</a>";
-				$check_btn_without_email = "Sem e-mail";
-				$check_btn = $has_email ? $check_btn_with_email : $check_btn_without_email;
-
 				$autenti_mail_post_meta = get_post_meta( $order->id, 'autenti_mail', true );
 				$has_autenti_mail = isset( $autenti_mail_post_meta ) && !empty( $autenti_mail_post_meta );
 
@@ -74,6 +69,11 @@ class Autentify_Plugin {
 						echo $autenti_mail->get_risk_score_msg_pt_br();
 					}
 				} else {
+					$check_btn_with_email = "<a href='#' class='button button-primary'"
+						. "onclick='startIndividualCheck(\"$order->ID\", \"$email\",\"$admin_ajax_url\")'>Iniciar Consulta</a>";
+					$check_btn_without_email = "Sem e-mail";
+					$check_btn = $has_email ? $check_btn_with_email : $check_btn_without_email;
+
 					if ( $column == 'autentify_autenti_mail_score' ) {
 						echo $check_btn;
 					}
