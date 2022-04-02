@@ -66,22 +66,17 @@ if ( ! version_compare( PHP_VERSION, '5.6', '>=' ) ) {
 	add_action( 'admin_notices', 'autentify_fail_woocommerce_deactivated' );
 } elseif ( ! defined('AUTENTIFY_API_TOKEN') || AUTENTIFY_API_TOKEN == "" ) {
 	add_action( 'admin_notices', 'autentify_fail_api_token_variable' );
-} elseif ( ! Autentify_Api::get_instance()->is_available() ) {
-	add_action( 'admin_notices', 'autentify_fail_api_connection' );
 } else {
 	require_once( AUTENTIFY_PATH . 'app/helpers/autentify_email_helper.php' );
 	require_once( AUTENTIFY_PATH . 'app/helpers/autentify_cpf_helper.php' );
 	require_once( AUTENTIFY_PATH . 'app/helpers/autentify_score_helper.php' );
 
-	if ( ! Autentify_Auth::get_instance()->is_authenticated() ) {
-		add_action( 'admin_notices', 'autentify_fail_authentication' );
-		return;
-	}
-
 	require_once( AUTENTIFY_PATH . 'app/models/autentify_user_check.php' );
 	require_once( AUTENTIFY_PATH . 'app/models/autentify_autenti_mail.php' );
+
 	require_once( AUTENTIFY_PATH . 'app/daos/autentify_user_check_dao.php' );
 	require_once( AUTENTIFY_PATH . 'app/daos/autentify_autenti_mail_dao.php' );
+	
 	require_once( AUTENTIFY_PATH . 'includes/user_roles.php' );
 	require_once( AUTENTIFY_PATH . 'app/actions/autentify_autenti_mail_actions.php' );
 	require AUTENTIFY_PATH . 'app/models/autentify_plugin.php';
