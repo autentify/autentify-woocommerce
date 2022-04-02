@@ -70,7 +70,7 @@ class Autentify_Plugin {
 					}
 				} else {
 					$check_btn_with_email = "<a href='#' class='button button-primary'"
-						. "onclick='startIndividualCheck(\"$order->ID\", \"$email\",\"$admin_ajax_url\")'>Iniciar Consulta</a>";
+						. "onclick='startIndividualCheck(\"$order->ID\", \"$admin_ajax_url\")'>Iniciar Consulta</a>";
 					$check_btn_without_email = "Sem e-mail";
 					$check_btn = $has_email ? $check_btn_with_email : $check_btn_without_email;
 

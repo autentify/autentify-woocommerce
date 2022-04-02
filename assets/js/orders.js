@@ -1,4 +1,4 @@
-function startIndividualCheck( orderId, email, adminAjaxUrl ) {
+function startIndividualCheck( orderId, adminAjaxUrl ) {
   var check = confirm( "Realmente deseja inicializar essa consulta?" );
 
   if ( ! check ) return;
@@ -13,8 +13,7 @@ function startIndividualCheck( orderId, email, adminAjaxUrl ) {
     type : 'POST',
     data : {
       action : 'autentify_autenti_mail_post',
-      param1 : orderId,
-      param2 : email,
+      param1 : orderId
     },
     success : function( response ) {
       response = JSON.parse( response );

@@ -14,9 +14,10 @@ if ( ! function_exists( 'autentify_autenti_mail_post' ) ) {
     }
 
     $order_id = sanitize_text_field( $_REQUEST['param1'] );
-    $response['email'] = sanitize_email( $_REQUEST['param2'] );
+    $order = wc_get_order( $order_id );
+    $email = $order->get_billing_email();
 
-    if ( ! Autentify_Email_Helper::get_instance()->is_valid_email( $response['email'] ) ) {
+    if ( ! Autentify_Email_Helper::get_instance()->is_valid_email( $email ) ) {
       $response['success'] = false;
       $response['message'] = 'E-mail inválido.';
       echo json_encode( $response );
@@ -24,7 +25,7 @@ if ( ! function_exists( 'autentify_autenti_mail_post' ) ) {
     }
 
     $autenti_mail_DAO = Autentify_Autenti_Mail_DAO::get_instance();
-    $autenti_mail_response = $autenti_mail_DAO->check( $response['email'] );
+    $autenti_mail_response = $autenti_mail_DAO->check( $email );
 
     $response['success'] = $autenti_mail_response->status == '201';
     $response['message'] = '';
@@ -35,8 +36,6 @@ if ( ! function_exists( 'autentify_autenti_mail_post' ) ) {
       $response['message'] = 'Consulta finalizada com sucesso!';
       $autentify_autenti_mail = new Autentify_Autenti_Mail($autenti_mail_response->autenti_mail);
       $response['autenti_mail'] = $autentify_autenti_mail->to_json();
-
-      $order = wc_get_order( $order_id );
 
       // WooCommerce 3.0 or later.
       if ( ! method_exists( $order, 'update_meta_data' ) ) {
