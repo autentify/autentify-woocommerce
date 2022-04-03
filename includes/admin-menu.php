@@ -17,21 +17,27 @@ function autentify_api_token_validate($input) {
 	$old_api_token_value = get_option('autentify_api_token');
 	$new_api_token_value = sanitize_text_field( $input );
 
-	if( isset( $new_api_token_value ) && $new_api_token_value != $old_api_token_value ) {
-		Autentify_Auth::get_instance()->invalidate_bearer_token_cookie();
-		Autentify_Api::get_instance()->set_token( $new_api_token_value );
-	}
-
-	if ( ! Autentify_Auth::get_instance()->is_authenticated() ) {
-		$message = 'Não foi possível autenticar seu API Token. Verifique se ele está correto em: '
-				. '<a href="https://painel.autentify.com.br/developers/api_token" target="_blank">'
-				. 'www.painel.autentify.com.br/developers/api_token</a>';
-		$type = 'error';
-		$code = 'invalid_autentify_api_token';
+	if ( ! Autentify_Api::get_instance()->is_available() ) {
+		$message = 'API não disponível. Aguarde alguns minutos, e tente novamente.';
+		$type = 'warning';
+		$code = 'autentify_api_offline';
 	} else {
-		$message = 'API Token autenticado com sucesso!';
-		$type = 'success';
-		$code = 'valid_autentify_api_token';
+		if ( isset( $new_api_token_value ) && $new_api_token_value != $old_api_token_value ) {
+			Autentify_Auth::get_instance()->invalidate_bearer_token_cookie();
+			Autentify_Api::get_instance()->set_token( $new_api_token_value );
+		}
+
+		if ( ! Autentify_Auth::get_instance()->is_authenticated() ) {
+			$message = 'Não foi possível autenticar seu API Token. Verifique se o API Token está '
+					. 'correto em:  <a href="https://painel.autentify.com.br/developers/api_token" target="_blank">'
+					. 'www.painel.autentify.com.br/developers/api_token</a>';
+			$type = 'error';
+			$code = 'invalid_autentify_api_token';
+		} else {
+			$message = 'API Token autenticado com sucesso!';
+			$type = 'success';
+			$code = 'valid_autentify_api_token';
+		}
 	}
 
 	add_settings_error( 'autentify_settings_notice', $code, $message, $type );
