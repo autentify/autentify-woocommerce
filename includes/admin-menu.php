@@ -14,13 +14,29 @@ if ( ! function_exists( 'register_autentify_settings' ) ) {
 }
 
 function autentify_api_token_validate($input) {
-	$old_setting_value = get_option('autentify_api_token');
+	$old_api_token_value = get_option('autentify_api_token');
+	$new_api_token_value = sanitize_text_field( $input );
 
-	if( isset( $input ) && $input != $old_setting_value ) {
+	if( isset( $new_api_token_value ) && $new_api_token_value != $old_api_token_value ) {
 		Autentify_Auth::get_instance()->invalidate_bearer_token_cookie();
+		Autentify_Api::get_instance()->set_token( $new_api_token_value );
 	}
 
-	return sanitize_text_field( $input );
+	if ( ! Autentify_Auth::get_instance()->is_authenticated() ) {
+		$message = 'Não foi possível autenticar seu API Token. Verifique se ele está correto em: '
+				. '<a href="https://painel.autentify.com.br/developers/api_token" target="_blank">'
+				. 'www.painel.autentify.com.br/developers/api_token</a>';
+		$type = 'error';
+		$code = 'invalid_autentify_api_token';
+	} else {
+		$message = 'API Token autenticado com sucesso!';
+		$type = 'success';
+		$code = 'valid_autentify_api_token';
+	}
+
+	add_settings_error( 'autentify_settings_notice', $code, $message, $type );
+
+	return $new_api_token_value;
 }
 
 if ( ! function_exists( 'autentify_settings_form_func' ) ) {
@@ -31,6 +47,7 @@ if ( ! function_exists( 'autentify_settings_form_func' ) ) {
 			<form method="post" action="options.php">
 				<?php settings_fields( 'autentify_settings_group' ); ?>
 				<?php do_settings_sections( 'autentify_settings_group' ); ?>
+				<?php settings_errors(); ?>
 				<table class="form-table">
 					<tr valign="top">
 						<th scope="row" style="padding-bottom: 0px;">

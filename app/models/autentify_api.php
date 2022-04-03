@@ -22,6 +22,10 @@ class Autentify_Api {
     return $this->base_url;
   }
 
+  public function set_token($token) {
+    $this->token = $token;
+  }
+
   public function get_token() {
     return $this->token;
   }
