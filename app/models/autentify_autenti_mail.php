@@ -94,7 +94,17 @@ class Autentify_Autenti_Mail {
   }
 
   public function has_valid_email() {
-    if ( Autentify_Email_Helper::get_instance()->is_valid_email( $email )) return true;
+    if ( Autentify_Email_Helper::get_instance()->is_valid_email( $this->email )) {
+      return true;
+    }
+
+    return false;
+  }
+
+  public function has_valid_cpf() {
+    if ( Autentify_Cpf_Helper::get_instance()->is_valid( $this->cpf )) {
+      return true;
+    }
 
     return false;
   }
