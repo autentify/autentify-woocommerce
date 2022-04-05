@@ -70,6 +70,7 @@ if ( ! version_compare( PHP_VERSION, '5.6', '>=' ) ) {
 	require_once( AUTENTIFY_PATH . 'app/helpers/autentify_email_helper.php' );
 	require_once( AUTENTIFY_PATH . 'app/helpers/autentify_cpf_helper.php' );
 	require_once( AUTENTIFY_PATH . 'app/helpers/autentify_score_helper.php' );
+	require_once( AUTENTIFY_PATH . 'app/helpers/autentify_autenti_mail_helper.php' );
 
 	require_once( AUTENTIFY_PATH . 'app/models/autentify_user_check.php' );
 	require_once( AUTENTIFY_PATH . 'app/models/autentify_autenti_mail.php' );

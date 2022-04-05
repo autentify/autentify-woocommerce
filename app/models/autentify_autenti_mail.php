@@ -3,6 +3,7 @@
 class Autentify_Autenti_Mail {
   private $id;
   private $email;
+  private $cpf;
   private $risk_score;
   private $risk_score_msg;
   private $created_at;
@@ -11,6 +12,11 @@ class Autentify_Autenti_Mail {
   public function __construct( $encoded_autenti_mail_in_json ) {
     $this->id = $encoded_autenti_mail_in_json->id;
     $this->email = $encoded_autenti_mail_in_json->email;
+
+    if ( isset( $encoded_autenti_mail_in_json->cpf ) ) {
+      $this->cpf = $encoded_autenti_mail_in_json->cpf;
+    }
+
     $this->risk_score = $encoded_autenti_mail_in_json->risk_score;
     $this->risk_score_msg = $encoded_autenti_mail_in_json->risk_score_msg;
     $this->description = $encoded_autenti_mail_in_json->description;
@@ -54,15 +60,22 @@ class Autentify_Autenti_Mail {
   }
 
   public function to_json() {
-    return [
+    $autenti_mail_in_json = [
       "id" => $this->id,
-      "email" => $this->email,
-      "risk_score" => $this->risk_score,
-      "risk_score_html" => $this->get_risk_score_html(),
-      "risk_score_msg" => $this->risk_score_msg,
-      "risk_score_msg_pt_br" => $this->get_risk_score_msg_pt_br(),
-      "created_at" => $this->created_at,
-      "updated_at" => $this->updated_at
+      "email" => $this->email
     ];
+
+    if ( isset( $this->cpf ) ) {
+      $autenti_mail_in_json["cpf"] = $this->cpf;
+    }
+    
+    $autenti_mail_in_json["risk_score"] = $this->risk_score;
+    $autenti_mail_in_json["risk_score_html"] = $this->get_risk_score_html();
+    $autenti_mail_in_json["risk_score_msg"] = $this->risk_score_msg;
+    $autenti_mail_in_json["risk_score_msg_pt_br"] = $this->get_risk_score_msg_pt_br();
+    $autenti_mail_in_json["created_at"] = $this->created_at;
+    $autenti_mail_in_json["updated_at"] = $this->updated_at;
+
+    return $autenti_mail_in_json;
   }
 }
