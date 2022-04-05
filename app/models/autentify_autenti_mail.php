@@ -10,15 +10,14 @@ class Autentify_Autenti_Mail {
   private $created_at;
   private $updated_at;
 
+  public function __construct($email, $cpf = null) {
+    $this->email = $email;
+    $this->cpf = $cpf;
+  }
+
   public static function with_encoded_json( $encoded_json ) {
-    $instance = new self();
+    $instance = new self($encoded_json->email, $encoded_json->cpf);
     $instance->id = $encoded_json->id;
-    $instance->email = $encoded_json->email;
-
-    if ( isset( $encoded_json->cpf ) ) {
-      $instance->cpf = $encoded_json->cpf;
-    }
-
     $instance->risk_score = $encoded_json->risk_score;
     $instance->risk_score_msg = $encoded_json->risk_score_msg;
     $instance->description = $encoded_json->description;
