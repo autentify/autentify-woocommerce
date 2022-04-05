@@ -92,4 +92,10 @@ class Autentify_Autenti_Mail {
 
     return "Sem e-mail";
   }
+
+  public function has_valid_email() {
+    if ( Autentify_Email_Helper::get_instance()->is_valid_email( $email )) return true;
+
+    return false;
+  }
 }

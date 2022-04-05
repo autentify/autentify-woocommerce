@@ -9,13 +9,15 @@ class Autentify_Email_Helper {
     if ( ! isset( self::$instance ) ) {
       self::$instance = new Autentify_Email_Helper();
     }
+    
     return self::$instance;
   }
   
   function is_valid_email( $email ) {
     if ( preg_match( "/\A[a-zA-Z0-9.!\#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\z/", $email ) ) {
-        return true;
+      return true;
     }
+
     return false;
   }
 }

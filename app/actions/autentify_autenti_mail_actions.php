@@ -16,8 +16,9 @@ if ( ! function_exists( 'autentify_autenti_mail_post' ) ) {
     $order_id = sanitize_text_field( $_REQUEST['param1'] );
     $order = wc_get_order( $order_id );
     $email = $order->get_billing_email();
+    $autenti_mail = new Autentify_Autenti_Mail( $email, $order->billing_cpf );
 
-    if ( ! Autentify_Email_Helper::get_instance()->is_valid_email( $email ) ) {
+    if ( ! $autenti_mail->has_valid_email() ) {
       $response['success'] = false;
       $response['message'] = 'E-mail inválido.';
       echo json_encode( $response );
