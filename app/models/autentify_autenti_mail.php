@@ -122,12 +122,12 @@ class Autentify_Autenti_Mail {
   }
   
   /**
-   * Calls is_valid_email method from Autentify_Email_Helper to validate
+   * Calls is_valid method from Autentify_Email_Helper to validate
    * the email attribute.
    * @return Boolean The value is true if the email is valid.
    */
   public function has_valid_email() {
-    return Autentify_Email_Helper::get_instance()->is_valid_email( $this->email );
+    return Autentify_Email_Helper::get_instance()->is_valid( $this->email );
   }
 
   /**

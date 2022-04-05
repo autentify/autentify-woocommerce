@@ -15,7 +15,7 @@ if ( ! function_exists( 'autentify_user_check_post' ) ) {
 
     $response['email'] = sanitize_email( $_REQUEST['param1'] );
 
-    if ( ! Autentify_Email_Helper::get_instance()->is_valid_email( $response['email'] ) ) {
+    if ( ! Autentify_Email_Helper::get_instance()->is_valid( $response['email'] ) ) {
       $response['success'] = false;
       $response['message'] = 'E-mail inválido.';
       echo json_encode( $response );
@@ -54,7 +54,7 @@ if ( ! function_exists( 'autentify_user_check_post_bulk_hundle_action_edit_shop_
       $email = $order->get_billing_email();
       $has_email = isset( $email ) && ! empty( $email );
       
-      if ( $has_email && ! Autentify_Email_Helper::get_instance()->is_valid_email( $email ) ) {
+      if ( $has_email && ! Autentify_Email_Helper::get_instance()->is_valid( $email ) ) {
         $count_invalid_emails++;
         continue;
       }
