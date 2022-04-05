@@ -57,7 +57,7 @@ class Autentify_Plugin {
 				$has_email = isset( $email ) && !empty( $email );
 				$admin_ajax_url = admin_url( "admin-ajax.php" );
 
-				$autenti_mail_post_meta = get_post_meta( $order->id, 'autenti_mail', true );
+				$autenti_mail_post_meta = get_post_meta( $order->get_id(), 'autenti_mail', true );
 				$has_autenti_mail = isset( $autenti_mail_post_meta ) && !empty( $autenti_mail_post_meta );
 
 				if ( $has_autenti_mail ) {
@@ -69,7 +69,7 @@ class Autentify_Plugin {
 					}
 				} else {
 					$check_btn_with_email = "<a href='#' class='button button-primary'"
-						. "onclick='startIndividualCheck(\"$order->ID\", \"$admin_ajax_url\")'>Iniciar Consulta</a>";
+						. "onclick='startIndividualCheck(\"$order->id\", \"$admin_ajax_url\")'>Iniciar Consulta</a>";
 					$check_btn_without_email = "Sem e-mail";
 					$check_btn = $has_email ? $check_btn_with_email : $check_btn_without_email;
 
