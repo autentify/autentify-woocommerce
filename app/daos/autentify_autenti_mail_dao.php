@@ -32,9 +32,7 @@ class Autentify_Autenti_Mail_DAO {
 			'email'    => $email
 		);
 
-    $cpf = Autentify_Cpf_Helper::get_instance()->format( $cpf );
-
-    if ( ! empty( $cpf ) ) {
+    if ( isset( $cpf ) ) {
       $request_body['cpf'] = $cpf;
     }
 
