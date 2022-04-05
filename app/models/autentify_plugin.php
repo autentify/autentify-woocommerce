@@ -54,7 +54,6 @@ class Autentify_Plugin {
 
 				$order = wc_get_order( $post->ID );
 				$email = $order->get_billing_email();
-				$has_email = isset( $email ) && !empty( $email );
 				$admin_ajax_url = admin_url( "admin-ajax.php" );
 
 				$autenti_mail_post_meta = get_post_meta( $order->get_id(), 'autenti_mail', true );
@@ -68,16 +67,10 @@ class Autentify_Plugin {
 						echo $autenti_mail->get_risk_score_msg_pt_br();
 					}
 				} else {
-					$check_btn_with_email = "<a href='#' class='button button-primary'"
-						. "onclick='startIndividualCheck(\"$order->id\", \"$admin_ajax_url\")'>Iniciar Consulta</a>";
-					$check_btn_without_email = "Sem e-mail";
-					$check_btn = $has_email ? $check_btn_with_email : $check_btn_without_email;
-
 					if ( $column == 'autentify_autenti_mail_score' ) {
-						echo $check_btn;
-					}
-					if ( $column == 'autentify_autenti_mail_score_msg' ) {
-
+						$autenti_mail = new Autentify_Autenti_Mail($email);
+						echo $autenti_mail->get_check_btn_in_html( $order->get_id(), $admin_ajax_url );
+					} elseif ( $column == 'autentify_autenti_mail_score_msg' ) {
 						echo "Não Solicitada";
 					}
 				}

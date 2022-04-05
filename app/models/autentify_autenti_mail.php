@@ -80,4 +80,16 @@ class Autentify_Autenti_Mail {
 
     return $autenti_mail_in_json;
   }
+
+  public function get_check_btn_in_html( $order_id, $admin_ajax_url ) {
+    $check_btn_with_email = "<a href='#' class='button button-primary'"
+        . "onclick='startIndividualCheck(\"$order_id\", \"$admin_ajax_url\")'>"
+        . "Iniciar Consulta</a>";
+
+    if ( isset ( $this->email ) && ! empty( $this->email ) ) {
+      return $check_btn_with_email;
+    }
+
+    return "Sem e-mail";
+  }
 }
