@@ -68,7 +68,7 @@ class Autentify_Plugin {
 					}
 				} else {
 					if ( $column == 'autentify_autenti_mail_score' ) {
-						$autenti_mail = new Autentify_Autenti_Mail($email);
+						$autenti_mail = new Autentify_Autenti_Mail( $email );
 						echo $autenti_mail->get_check_btn_in_html( $order->get_id(), $admin_ajax_url );
 					} elseif ( $column == 'autentify_autenti_mail_score_msg' ) {
 						echo "Não Solicitada";

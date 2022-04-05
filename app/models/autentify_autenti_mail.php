@@ -15,6 +15,12 @@ class Autentify_Autenti_Mail {
     $this->cpf = $cpf;
   }
 
+  /**
+   * Instances an Autentify_Autenti_Mail using the encoded JSON.
+   * @param stdClass The object must contain the encoded JSON with the
+   * Autentify_Autenti_Mail attribute names.
+   * @return Autentify_Autenti_Mail The created instance.
+   */
   public static function with_encoded_json( $encoded_json ) {
     $instance = new self($encoded_json->email, $encoded_json->cpf);
     $instance->id = $encoded_json->id;
@@ -26,12 +32,20 @@ class Autentify_Autenti_Mail {
     return $instance;
   }
 
+  /**
+   * Creates the risk score HTML to be used in orders page.
+   * @return String The risk score in HTML.
+   */
   public function get_risk_score_html() {
     $css_color = Autentify_Score_Helper::get_instance()->get_risk_score_css_color($this->risk_score);
     $html_score = "<span style='color: #" . $this->get_risk_score_css_color() . ";'>$this->risk_score</span>";
     return $html_score;
   }
 
+  /**
+   * Chooses the risk score css color by risk score.
+   * @return String The CSS color value in hexadecimal.
+   */
   private function get_risk_score_css_color() {
     if ( $this->risk_score <= 300 ) {
       return "e54270";
@@ -41,6 +55,11 @@ class Autentify_Autenti_Mail {
     return "3ac47d";
   }
 
+  /**
+   * Chooses the pt-br risk score message by the default risk score message that is
+   * in English.
+   * @return String The translated risk score message.
+   */
   public function get_risk_score_msg_pt_br() {
     $translated_risk_score_msg = " Risco";
     switch ( $this->risk_score_msg ) {
@@ -61,6 +80,10 @@ class Autentify_Autenti_Mail {
     return $translated_risk_score_msg;
   }
 
+  /**
+   * Creates an Array using the attributes names as keys and attribute values as values.
+   * @return Array The Array with the keys and values.
+   */
   public function to_json() {
     $autenti_mail_in_json = [
       "id" => $this->id,
@@ -81,6 +104,11 @@ class Autentify_Autenti_Mail {
     return $autenti_mail_in_json;
   }
 
+  /**
+   * Creates the check button in HTML for orders page. The check button only is enabled
+   * if the email is isset and it is not empty.
+   * @return String The values contains the button HTML.
+   */
   public function get_check_btn_in_html( $order_id, $admin_ajax_url ) {
     $check_btn_with_email = "<a href='#' class='button button-primary'"
         . "onclick='startIndividualCheck(\"$order_id\", \"$admin_ajax_url\")'>"
@@ -92,20 +120,22 @@ class Autentify_Autenti_Mail {
 
     return "Sem e-mail";
   }
-
+  
+  /**
+   * Calls is_valid_email method from Autentify_Email_Helper to validate
+   * the email attribute.
+   * @return Boolean The value is true if the email is valid.
+   */
   public function has_valid_email() {
-    if ( Autentify_Email_Helper::get_instance()->is_valid_email( $this->email )) {
-      return true;
-    }
-
-    return false;
+    return Autentify_Email_Helper::get_instance()->is_valid_email( $this->email );
   }
 
+  /**
+   * Calls is_valid method from Autentify_Cpf_Helper to validate
+   * the cpf attribute.
+   * @return Boolean The value is true if the cpf is valid.
+   */
   public function has_valid_cpf() {
-    if ( Autentify_Cpf_Helper::get_instance()->is_valid( $this->cpf )) {
-      return true;
-    }
-
-    return false;
+    return Autentify_Cpf_Helper::get_instance()->is_valid( $this->cpf );
   }
 }
