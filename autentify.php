@@ -74,7 +74,6 @@ if ( ! version_compare( PHP_VERSION, '5.6', '>=' ) ) {
 
 	require_once( AUTENTIFY_PATH . 'app/models/autentify_autenti_mail.php' );
 
-	require_once( AUTENTIFY_PATH . 'app/daos/autentify_user_check_dao.php' );
 	require_once( AUTENTIFY_PATH . 'app/daos/autentify_autenti_mail_dao.php' );
 	
 	require_once( AUTENTIFY_PATH . 'includes/user_roles.php' );
