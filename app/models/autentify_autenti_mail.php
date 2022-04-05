@@ -6,22 +6,25 @@ class Autentify_Autenti_Mail {
   private $cpf;
   private $risk_score;
   private $risk_score_msg;
+  private $description;
   private $created_at;
   private $updated_at;
 
-  public function __construct( $encoded_autenti_mail_in_json ) {
-    $this->id = $encoded_autenti_mail_in_json->id;
-    $this->email = $encoded_autenti_mail_in_json->email;
+  public static function with_encoded_json( $encoded_json ) {
+    $instance = new self();
+    $instance->id = $encoded_json->id;
+    $instance->email = $encoded_json->email;
 
-    if ( isset( $encoded_autenti_mail_in_json->cpf ) ) {
-      $this->cpf = $encoded_autenti_mail_in_json->cpf;
+    if ( isset( $encoded_json->cpf ) ) {
+      $instance->cpf = $encoded_json->cpf;
     }
 
-    $this->risk_score = $encoded_autenti_mail_in_json->risk_score;
-    $this->risk_score_msg = $encoded_autenti_mail_in_json->risk_score_msg;
-    $this->description = $encoded_autenti_mail_in_json->description;
-    $this->created_at = $encoded_autenti_mail_in_json->created_at;
-    $this->updated_at = $encoded_autenti_mail_in_json->updated_at;
+    $instance->risk_score = $encoded_json->risk_score;
+    $instance->risk_score_msg = $encoded_json->risk_score_msg;
+    $instance->description = $encoded_json->description;
+    $instance->created_at = $encoded_json->created_at;
+    $instance->updated_at = $encoded_json->updated_at;
+    return $instance;
   }
 
   public function get_risk_score_html() {

@@ -61,7 +61,7 @@ class Autentify_Plugin {
 				$has_autenti_mail = isset( $autenti_mail_post_meta ) && !empty( $autenti_mail_post_meta );
 
 				if ( $has_autenti_mail ) {
-					$autenti_mail = new Autentify_Autenti_Mail($autenti_mail_post_meta);
+					$autenti_mail = Autentify_Autenti_Mail::with_encoded_json($autenti_mail_post_meta);
 					if ( $column == 'autentify_autenti_mail_score' ) {
 						echo $autenti_mail->get_risk_score_html();
 					} elseif ( $column == 'autentify_autenti_mail_score_msg' ) {
