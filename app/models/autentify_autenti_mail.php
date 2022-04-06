@@ -38,7 +38,8 @@ class Autentify_Autenti_Mail {
    */
   public function get_risk_score_html() {
     $css_color = Autentify_Score_Helper::get_instance()->get_risk_score_css_color($this->risk_score);
-    $html_score = "<span style='color: #" . $this->get_risk_score_css_color() . ";'>$this->risk_score</span>";
+    $html_score = "<span style='color: #" . $this->get_risk_score_css_color() . ";'>"
+        . "<b>$this->risk_score</b></span>";
     return $html_score;
   }
 
@@ -62,14 +63,18 @@ class Autentify_Autenti_Mail {
    */
   public function get_risk_score_msg_pt_br() {
     $translated_risk_score_msg = " Risco";
+    $status_css_class = '';
     switch ( $this->risk_score_msg ) {
       case 'high':
+        $status_css_class = 'status-danger';
         $translated_risk_score_msg = "Alto" . $translated_risk_score_msg;
         break;
       case 'mid':
+        $status_css_class = 'status-warning';
         $translated_risk_score_msg = "Médio" . $translated_risk_score_msg;
         break;
       case 'low':
+        $status_css_class = 'status-success';
         $translated_risk_score_msg = "Baixo" . $translated_risk_score_msg;
         break;
       default:
@@ -77,7 +82,11 @@ class Autentify_Autenti_Mail {
         break;
     }
 
-    return $translated_risk_score_msg;
+    $translated_risk_score_html = '<div class="autentify-check-status '
+        . $status_css_class . '">'
+        . '<span>' . $translated_risk_score_msg . '</span></div>';
+
+    return $translated_risk_score_html;
   }
 
   /**

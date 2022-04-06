@@ -24,6 +24,7 @@ class Autentify_Plugin {
 			function autentify_admin_orders_script( $hook ) {
 				if ( $hook != "edit.php" ) return;
 				wp_enqueue_script( 'autentify_admin_orders_script', AUTENTIFY_ASSETS_URL . 'js/orders.js', array( 'jquery' ), '', true );
+        wp_enqueue_style( 'autentify_admin_orders_style', AUTENTIFY_ASSETS_URL . 'css/order.css', array());
 			}
 			add_action( 'admin_enqueue_scripts', 'autentify_admin_orders_script' );
 		}
@@ -71,7 +72,7 @@ class Autentify_Plugin {
 						$autenti_mail = new Autentify_Autenti_Mail( $email );
 						echo $autenti_mail->get_check_btn_in_html( $order->get_id(), $admin_ajax_url );
 					} elseif ( $column == 'autentify_autenti_mail_score_msg' ) {
-						echo "Não Solicitada";
+						echo '<div class="autentify-check-status"><span>Não Solicitada</span></div>';
 					}
 				}
 			}
