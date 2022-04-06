@@ -53,7 +53,7 @@ define( 'AUTENTIFY_ASSETS_URL', AUTENTIFY_URL . 'assets/' );
 
 define( 'AUTENTIFY_API_TOKEN', get_option( 'autentify_api_token' ) );
 
-require_once(AUTENTIFY_PATH . 'app/models/autentify_api.php' );
+require_once( AUTENTIFY_PATH . 'app/models/autentify_api.php' );
 require_once( AUTENTIFY_PATH . 'app/models/autentify_auth.php' );
 
 require_once 'includes/admin-menu.php';
@@ -67,10 +67,8 @@ if ( ! version_compare( PHP_VERSION, '5.6', '>=' ) ) {
 } elseif ( ! defined('AUTENTIFY_API_TOKEN') || AUTENTIFY_API_TOKEN == "" ) {
 	add_action( 'admin_notices', 'autentify_fail_api_token_variable' );
 } else {
-	if ( ! class_exists('Extra_Checkout_Fields_For_Brazil') ) {
-		add_action( 'admin_notices', 'autentify_wecffb_deactivated' );
-	}
-	
+	add_action('plugins_loaded', 'autentify_plugins_loaded_check', 0);
+
 	require_once( AUTENTIFY_PATH . 'app/helpers/autentify_email_helper.php' );
 	require_once( AUTENTIFY_PATH . 'app/helpers/autentify_cpf_helper.php' );
 	require_once( AUTENTIFY_PATH . 'app/helpers/autentify_score_helper.php' );
@@ -209,4 +207,17 @@ function autentify_wecffb_deactivated() {
 			. ' WooCommerce Extra Checkout Fields For Brazil</a> para consultar usando o CPF do cliente.';
 	$html_message = sprintf( '<div class="notice notice-warning is-dismissible">%s</div>', wpautop( $message ) );
 	echo wp_kses_post( $html_message );
+}
+
+/**
+ * Adds an admin notice if the Extra Checkout Fields For Brazil plugin is not active.
+ *
+ * @since 2.0.0
+ *
+ * @return void
+ */
+function autentify_plugins_loaded_check() {
+	if ( ! class_exists('Extra_Checkout_Fields_For_Brazil') ) {
+		add_action( 'admin_notices', 'autentify_wecffb_deactivated' );
+	}
 }
