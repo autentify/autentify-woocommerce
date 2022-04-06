@@ -12,7 +12,7 @@ class Autentify_Autenti_Mail {
 
   public function __construct($email, $cpf = null) {
     $this->email = $email;
-    $this->cpf = $cpf;
+    $this->cpf = Autentify_Autenti_Mail_Helper::get_instance()->format_cpf( $cpf );
   }
 
   /**
@@ -137,5 +137,10 @@ class Autentify_Autenti_Mail {
    */
   public function has_valid_cpf() {
     return Autentify_Cpf_Helper::get_instance()->is_valid( $this->cpf );
+  }
+
+  # Add to call this function in AutentiMail actions and test 
+  public function get_cpf() {
+    return $this->cpf;
   }
 }

@@ -27,8 +27,7 @@ if ( ! function_exists( 'autentify_autenti_mail_post' ) ) {
 
     $autenti_mail_DAO = Autentify_Autenti_Mail_DAO::get_instance();
     if ( $autenti_mail->has_valid_cpf() ) {
-      $formatted_autenti_mail_cpf = Autentify_Autenti_Mail_Helper::get_instance()->format( $order->billing_cpf );
-      $autenti_mail_response = $autenti_mail_DAO->check( $email, $formatted_autenti_mail_cpf );
+      $autenti_mail_response = $autenti_mail_DAO->check( $email, $autenti_mail->get_cpf() );
     } else {
       $autenti_mail_response = $autenti_mail_DAO->check( $email );
     }

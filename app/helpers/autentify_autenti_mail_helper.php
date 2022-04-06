@@ -18,7 +18,7 @@ class Autentify_Autenti_Mail_Helper {
    * @param String $cpf The String that contains the CPF to be formatted.
    * @return String with The formatted cpf.
    */
-  public function format( $cpf ) {
+  public function format_cpf( $cpf ) {
     if (! isset( $cpf )) return $cpf;
 
     $cpf = trim( $cpf );
