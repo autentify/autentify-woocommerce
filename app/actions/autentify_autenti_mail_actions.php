@@ -39,7 +39,7 @@ if ( ! function_exists( 'autentify_autenti_mail_post' ) ) {
       $response['message'] = Autentify_Api::get_instance()->get_error_messsage( $autenti_mail_response->code );
     } else {
       $response['message'] = 'Consulta finalizada com sucesso!';
-      $autentify_autenti_mail = Autentify_Autenti_Mail::with_encoded_json($autenti_mail_response->autenti_mail);
+      $autentify_autenti_mail = Autentify_Autenti_Mail::with_encoded_json( $autenti_mail_response->autenti_mail );
       $response['autenti_mail'] = $autentify_autenti_mail->to_json();
 
       // WooCommerce 3.0 or later.

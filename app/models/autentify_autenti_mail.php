@@ -139,7 +139,6 @@ class Autentify_Autenti_Mail {
     return Autentify_Cpf_Helper::get_instance()->is_valid( $this->cpf );
   }
 
-  # Add to call this function in AutentiMail actions and test 
   public function get_cpf() {
     return $this->cpf;
   }

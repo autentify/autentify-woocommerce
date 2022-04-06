@@ -67,6 +67,10 @@ if ( ! version_compare( PHP_VERSION, '5.6', '>=' ) ) {
 } elseif ( ! defined('AUTENTIFY_API_TOKEN') || AUTENTIFY_API_TOKEN == "" ) {
 	add_action( 'admin_notices', 'autentify_fail_api_token_variable' );
 } else {
+	if ( ! class_exists('Extra_Checkout_Fields_For_Brazil') ) {
+		add_action( 'admin_notices', 'autentify_wecffb_deactivated' );
+	}
+	
 	require_once( AUTENTIFY_PATH . 'app/helpers/autentify_email_helper.php' );
 	require_once( AUTENTIFY_PATH . 'app/helpers/autentify_cpf_helper.php' );
 	require_once( AUTENTIFY_PATH . 'app/helpers/autentify_score_helper.php' );
@@ -108,7 +112,7 @@ function autentify_fail_api_token_variable() {
 	$message = 'Autentify requer o API Token. Para configurar o API Token, acesse o menu lateral esquerdo do WordPress,'
 		. ' localize a opção "Autentify", em seguida adicione o API Token no campo correspondente, e clique em salvar mudanças.'
 		. ' E para obter o API Token entre em nosso painel: <a href="https://painel.autentify.com.br/developers/api_token" target="_blank">www.painel.autentify.com.br/developers/api_token</a>';
-	$html_message = sprintf( '<div class="error">%s</div>', wpautop( $message ) );
+	$html_message = sprintf( '<div class="notice notice-error is-dismissible">%s</div>', wpautop( $message ) );
 	echo wp_kses_post( $html_message );
 }
 
@@ -122,8 +126,8 @@ function autentify_fail_api_token_variable() {
  * @return void
  */
 function autentify_fail_api_connection() {
-	$message = 'Autentify API não está disponível no momento. Por favor, aguade um pouco, e tente novamente mais tarde. Para mais informações entre em nosso site: <a href="https://autentify.com.br" target="_blank">autentify.com.br</a>';
-	$html_message = sprintf( '<div class="error">%s</div>', wpautop( $message ) );
+	$message = 'Autentify API não está disponível no momento. Por favor, aguade um pouco, e tente novamente mais tarde. Para mais informações entre em nosso site: <a href="https://autentify.com.br" target="_blank">www.autentify.com.br</a>';
+	$html_message = sprintf( '<div class="notice notice-error is-dismissible">%s</div>', wpautop( $message ) );
 	echo wp_kses_post( $html_message );
 }
 
@@ -138,7 +142,7 @@ function autentify_fail_api_connection() {
  */
 function autentify_fail_authentication() {
 	$message = 'Autentify não conseguiu validar o API Token definido nas configurações para gerar o Bearer Token. Entre em nosso painel, e verifique se o API Token foi copiado corretamente: <a href="https://painel.autentify.com.br/developers/api_token" target="_blank">www.painel.autentify.com.br/developers/api_token</a>';
-	$html_message = sprintf( '<div class="error">%s</div>', wpautop( $message ) );
+	$html_message = sprintf( '<div class="notice notice-error is-dismissible">%s</div>', wpautop( $message ) );
 	echo wp_kses_post( $html_message );
 }
 
@@ -154,7 +158,7 @@ function autentify_fail_authentication() {
 function autentify_fail_php_version() {
 	/* translators: %s: PHP version */
 	$message = sprintf( esc_html__( 'Autentify requer a versão mínima do PHP %s+. O plugin atualmente NÃO ESTÁ FUNCIONANDO.', 'autentify' ), '5.6' );
-	$html_message = sprintf( '<div class="error">%s</div>', wpautop( $message ) );
+	$html_message = sprintf( '<div class="notice notice-error is-dismissible">%s</div>', wpautop( $message ) );
 	echo wp_kses_post( $html_message );
 }
 
@@ -170,7 +174,7 @@ function autentify_fail_php_version() {
 function autentify_fail_wp_version() {
 	/* translators: %s: WordPress version */
 	$message = sprintf( esc_html__( 'Autentify requer a versão mínima do WordPress %s+. O plugin atualmente NÃO ESTÁ FUNCIONANDO.', 'autentify' ), '4.7' );
-	$html_message = sprintf( '<div class="error">%s</div>', wpautop( $message ) );
+	$html_message = sprintf( '<div class="notice notice-error is-dismissible">%s</div>', wpautop( $message ) );
 	echo wp_kses_post( $html_message );
 }
 
@@ -186,6 +190,23 @@ function autentify_fail_wp_version() {
 function autentify_fail_woocommerce_deactivated() {
 	/* translators: %s: WooCommerce version */
 	$message = sprintf( esc_html__( 'Autentify requer o plugin do WooCommerce %s+ ativado. O plugin atualmente NÃO ESTÁ FUNCIONANDO.', 'autentify' ), '3.3' );
-	$html_message = sprintf( '<div class="error">%s</div>', wpautop( $message ) );
+	$html_message = sprintf( '<div class="notice notice-error is-dismissible">%s</div>', wpautop( $message ) );
+	echo wp_kses_post( $html_message );
+}
+
+/**
+ * Autentify admin notice for WooCommerce Extra Checkout Fields For Brazil plugin.
+ *
+ * Warning when the site doesn't have the WooCommerce Extra Checkout Fields For Brazil plugin activated.
+ *
+ * @since 2.0.0
+ *
+ * @return void
+ */
+function autentify_wecffb_deactivated() {
+	$message = 'Autentify requer o plugin '
+			. '<a href="https://wordpress.org/plugins/woocommerce-extra-checkout-fields-for-brazil/" target="_blank">'
+			. ' WooCommerce Extra Checkout Fields For Brazil</a> para consultar usando o CPF do cliente.';
+	$html_message = sprintf( '<div class="notice notice-warning is-dismissible">%s</div>', wpautop( $message ) );
 	echo wp_kses_post( $html_message );
 }
