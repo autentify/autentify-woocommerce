@@ -38,7 +38,7 @@ class Autentify_Plugin {
 				unset( $new_columns['order_total'] );
 
 				$new_columns['autentify_autenti_mail_score'] = 'AutentiMail Score';
-				$new_columns['autentify_autenti_mail_score_msg'] = 'AutentiMail Status';
+				$new_columns['autentify_autenti_mail_score_msg'] = 'Classificação de Risco';
 				$new_columns['order_actions'] = $columns['order_actions'];
 				$new_columns['order_total'] = 'Total';
 
