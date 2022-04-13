@@ -53,6 +53,7 @@ if ( ! function_exists( 'autentify_autenti_mail_post' ) ) {
     echo json_encode( $response );
     die();
   }
+  
   add_action( 'wp_ajax_autentify_autenti_mail_post', 'autentify_autenti_mail_post' );
 }
 
