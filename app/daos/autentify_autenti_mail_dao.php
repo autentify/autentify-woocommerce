@@ -38,7 +38,7 @@ class Autentify_Autenti_Mail_DAO {
 
 		$args = array(
 			'body'            => $request_body,
-			'timeout'         => '10',
+			'timeout'         => '120',
       'headers'         => array(
         'Authorization' => 'Bearer ' . $this->auth->get_bearer_token()
       )
