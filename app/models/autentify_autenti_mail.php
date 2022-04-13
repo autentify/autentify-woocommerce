@@ -148,6 +148,10 @@ class Autentify_Autenti_Mail {
     return Autentify_Cpf_Helper::get_instance()->is_valid( $this->cpf );
   }
 
+  public function get_email() {
+    return $this->email;
+  }
+
   public function get_cpf() {
     return $this->cpf;
   }
