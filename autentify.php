@@ -39,7 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'AUTENTIFY_VERSION', '1.0.3' );
+define( 'AUTENTIFY_VERSION', '2.0.0' );
 
 define( 'AUTENTIFY__FILE__', __FILE__ );
 define( 'AUTENTIFY_PLUGIN_BASE', plugin_basename( AUTENTIFY__FILE__ ) );
