@@ -10,20 +10,26 @@ if ( ! function_exists( 'autentify_create_settings_menu' ) ) {
 if ( ! function_exists( 'register_autentify_settings' ) ) {
 	function register_autentify_settings() {
 		register_setting( 'autentify_settings_group', 'autentify_api_token', 'autentify_api_token_validate' );
+		register_setting( 'autentify_settings_group', 'autentify_auto_order_check', 'autentify_auto_order_check_validate' );
 	}
 }
 
-function autentify_api_token_validate($input) {
+function autentify_api_token_validate( $input ) {
 	$old_api_token_value = get_option('autentify_api_token');
 	$new_api_token_value = sanitize_text_field( $input );
+
+	if ( $new_api_token_value == $old_api_token_value ) {
+		return $new_api_token_value;
+	}
 
 	if ( ! Autentify_Api::get_instance()->is_available() ) {
 		$message = 'API não disponível. Aguarde alguns minutos, e tente novamente.';
 		$type = 'warning';
 		$code = 'autentify_api_offline';
 	} else {
-		if ( isset( $new_api_token_value ) && $new_api_token_value != $old_api_token_value ) {
-			Autentify_Auth::get_instance()->invalidate_bearer_token_cookie();
+		Autentify_Auth::get_instance()->invalidate_bearer_token_cookie();
+
+		if ( isset( $new_api_token_value ) ) {
 			Autentify_Api::get_instance()->set_token( $new_api_token_value );
 		}
 
@@ -33,16 +39,21 @@ function autentify_api_token_validate($input) {
 					. 'www.painel.autentify.com.br/developers/api_token</a>';
 			$type = 'error';
 			$code = 'invalid_autentify_api_token';
-		} else {
-			$message = 'API Token autenticado com sucesso!';
-			$type = 'success';
-			$code = 'valid_autentify_api_token';
+			add_settings_error( 'autentify_settings_notice', $code, $message, $type );
 		}
 	}
 
-	add_settings_error( 'autentify_settings_notice', $code, $message, $type );
-
 	return $new_api_token_value;
+}
+
+function autentify_auto_order_check_validate( $input ) {
+	$new_input_value = sanitize_text_field( $input );
+
+	if ( ! empty( $new_input_value ) && $new_input_value == "on" ) {
+		return "true";
+	} else {
+		return "false";
+	}
 }
 
 if ( ! function_exists( 'autentify_settings_page_content' ) ) {
@@ -61,7 +72,6 @@ if ( ! function_exists( 'autentify_settings_form_func' ) ) {
 		?>
 		<form method="post" action="options.php">
 			<?php settings_fields( 'autentify_settings_group' ); ?>
-			<?php do_settings_sections( 'autentify_settings_group' ); ?>
 			<?php settings_errors(); ?>
 			<table class="form-table">
 				<tr valign="top">
@@ -84,7 +94,21 @@ if ( ! function_exists( 'autentify_settings_form_func' ) ) {
 						</a>
 					</td>
 				</tr>
-				<tr>
+				<tr valign="top">
+					<th scope="row" style="padding-bottom: 0px;">
+						Consultar automaticamente
+					</th>
+					<td style="padding-bottom: 0px;">
+						<input type="checkbox" name="autentify_auto_order_check" class="checkbox"
+								<?php echo esc_attr( get_option( 'autentify_auto_order_check' ) == "true" ? "checked" : "" ); ?> />
+					</td>
+				</tr>
+				<tr valign="top">
+					<td scope="row" colspan="2" style="padding-top: 10px; padding-left: 0px;">
+						Se a opção acima estiver selecionada, as consultas serão feitas automaticamente <br />
+						quando o pedido receber o status "processando".
+					</td>
+				</tr>
 			</table>
 			<?php submit_button(); ?>
 		</form>

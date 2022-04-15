@@ -56,7 +56,9 @@ define( 'AUTENTIFY_API_TOKEN', get_option( 'autentify_api_token' ) );
 require_once( AUTENTIFY_PATH . 'app/models/autentify_api.php' );
 require_once( AUTENTIFY_PATH . 'app/models/autentify_auth.php' );
 
-require_once 'includes/admin-menu.php';
+require_once( AUTENTIFY_PATH . 'includes/admin-menu.php');
+require_once( AUTENTIFY_PATH . 'includes/autentify_activator.php' );
+require_once( AUTENTIFY_PATH . 'includes/autentify_deactivator.php' );
 
 if ( ! version_compare( PHP_VERSION, '5.6', '>=' ) ) {
 	add_action( 'admin_notices', 'autentify_fail_php_version' );

@@ -57,38 +57,40 @@ if ( ! function_exists( 'autentify_autenti_mail_post' ) ) {
   add_action( 'wp_ajax_autentify_autenti_mail_post', 'autentify_autenti_mail_post' );
 }
 
-if ( ! function_exists( 'autentify_autenti_mail_check' ) ) {
-  function autentify_autenti_mail_check($order_id) {
-    $order = wc_get_order( $order_id );
-    $autenti_mail = new Autentify_Autenti_Mail( $order->get_billing_email(), $order->billing_cpf );
+if ( get_option( 'autentify_auto_order_check' ) == "true" ) {
+  if ( ! function_exists( 'autentify_autenti_mail_check' ) ) {
+    function autentify_autenti_mail_check($order_id) {
+      $order = wc_get_order( $order_id );
+      $autenti_mail = new Autentify_Autenti_Mail( $order->get_billing_email(), $order->billing_cpf );
 
-    if ( ! $autenti_mail->has_valid_email() ) return;
+      if ( ! $autenti_mail->has_valid_email() ) return;
 
-    $autenti_mail_DAO = Autentify_Autenti_Mail_DAO::get_instance();
-    if ( $autenti_mail->has_valid_cpf() ) {
-      $autenti_mail_response = $autenti_mail_DAO->check( $autenti_mail->get_email(), $autenti_mail->get_cpf() );
-    } else {
-      $autenti_mail_response = $autenti_mail_DAO->check( $autenti_mail->get_email() );
+      $autenti_mail_DAO = Autentify_Autenti_Mail_DAO::get_instance();
+      if ( $autenti_mail->has_valid_cpf() ) {
+        $autenti_mail_response = $autenti_mail_DAO->check( $autenti_mail->get_email(), $autenti_mail->get_cpf() );
+      } else {
+        $autenti_mail_response = $autenti_mail_DAO->check( $autenti_mail->get_email() );
+      }
+
+      // WooCommerce 3.0 or later.
+      if ( ! method_exists( $order, 'update_meta_data' ) ) {
+        update_post_meta( $order_id, "autenti_mail", $autenti_mail_response->autenti_mail );
+      } else {
+        $order->update_meta_data( "autenti_mail", $autenti_mail_response->autenti_mail );
+        $order->save();
+      }
     }
 
-    // WooCommerce 3.0 or later.
-    if ( ! method_exists( $order, 'update_meta_data' ) ) {
-      update_post_meta( $order_id, "autenti_mail", $autenti_mail_response->autenti_mail );
-    } else {
-      $order->update_meta_data( "autenti_mail", $autenti_mail_response->autenti_mail );
-      $order->save();
-    }
+    add_action( 'wp_async_autentify_autenti_mail_check', 'autentify_autenti_mail_check' );
   }
 
-  add_action( 'wp_async_autentify_autenti_mail_check', 'autentify_autenti_mail_check' );
-}
-
-if ( ! function_exists( 'autentify_check_autenti_mail_order_status_changed' ) ) {
-  function autentify_check_autenti_mail_order_status_changed( $order_id, $old_status, $new_status ) {
-    if( $new_status == "processing" ) {
-      wp_schedule_single_event( 1, 'wp_async_autentify_autenti_mail_check', [ $order_id ] );
+  if ( ! function_exists( 'autentify_check_autenti_mail_order_status_changed' ) ) {
+    function autentify_check_autenti_mail_order_status_changed( $order_id, $old_status, $new_status ) {
+      if( $new_status == "processing" ) {
+        wp_schedule_single_event( 1, 'wp_async_autentify_autenti_mail_check', [ $order_id ] );
+      }
     }
-  }
 
-  add_action('woocommerce_order_status_changed', 'autentify_check_autenti_mail_order_status_changed', 10, 3 );
+    add_action('woocommerce_order_status_changed', 'autentify_check_autenti_mail_order_status_changed', 10, 3 );
+  }
 }
