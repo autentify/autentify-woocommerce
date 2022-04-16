@@ -20,7 +20,7 @@ class Autentify_Plugin {
   }
 
 	private function load_js_files() {
-		if ( isset($_GET['post_type']) && $_GET['post_type'] == 'shop_order' && ! function_exists( 'autentify_admin_orders_script') ) {
+		if ( isset($_GET['post_type']) && $_GET['post_type'] == 'shop_order' && ! function_exists( 'autentify_admin_orders_script' ) ) {
 			function autentify_admin_orders_script( $hook ) {
 				if ( $hook != "edit.php" ) return;
 				wp_enqueue_script( 'autentify_admin_orders_script', AUTENTIFY_ASSETS_URL . 'js/orders.js', array( 'jquery' ), '', true );
@@ -60,7 +60,14 @@ class Autentify_Plugin {
 				$autenti_mail_post_meta = get_post_meta( $order->get_id(), 'autenti_mail', true );
 				$has_autenti_mail = isset( $autenti_mail_post_meta ) && !empty( $autenti_mail_post_meta );
 
-				if ( $has_autenti_mail ) {
+				// Adds waiting status when the check was requested more than AUTENTIFY_CHECK_TIMEOUT seconds ago.
+				if ( $has_autenti_mail && $autenti_mail_post_meta->status == 202 && ($autenti_mail_post_meta->created_at + AUTENTIFY_CHECK_TIMEOUT) > Time() ) {
+					if ( $column == 'autentify_autenti_mail_score' ) {
+						echo "Consultando...";
+					} elseif ( $column == 'autentify_autenti_mail_score_msg' ) {
+						echo '<div class="autentify-check-status"><span>Aguarde</span></div>';
+					}
+				} elseif ( $has_autenti_mail && ! isset( $autenti_mail_post_meta->status ) ) {
 					$autenti_mail = Autentify_Autenti_Mail::with_encoded_json($autenti_mail_post_meta);
 					if ( $column == 'autentify_autenti_mail_score' ) {
 						echo $autenti_mail->get_risk_score_html();

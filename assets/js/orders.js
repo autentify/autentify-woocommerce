@@ -3,9 +3,11 @@ function startIndividualCheck( orderId, adminAjaxUrl ) {
 
   if ( ! check ) return;
 
-  var orderTd = jQuery( `#post-${orderId} > td.column-autentify_autenti_mail_score` )[0];
-  var oldInnerHTML = orderTd.innerHTML;
-  updateBeforeIndividual( orderTd );
+  var orderScoreTd = jQuery( `#post-${orderId} > td.column-autentify_autenti_mail_score` )[0];
+  var scoreTdOldInnerHTML = orderScoreTd.innerHTML;
+  var orderScoreMsgTd = jQuery( `#post-${orderId} > td.column-autentify_autenti_mail_score_msg` )[0];
+  var scoreMsgTdOldInnerHTML = orderScoreMsgTd.innerHTML;
+  updateBeforeIndividual( orderScoreTd, orderScoreMsgTd );
 
   jQuery( "#autentify-notice" ).remove();
   jQuery.ajax( {
@@ -19,11 +21,11 @@ function startIndividualCheck( orderId, adminAjaxUrl ) {
       response = JSON.parse( response );
       var success = response['success'] == true;
       if ( success ) {
-        updateAfterIndividualCheckSuccess( orderId, orderTd, response['autenti_mail'] );
+        updateAfterIndividualCheckSuccess( orderScoreTd, orderScoreMsgTd, response['autenti_mail'] );
         jQuery( '#wpbody-content .wrap ul' )
           .before( '<div id="autentify-notice" class="notice notice-success"><p>' + response['message'] + '</p></div>' );
       } else {
-        updateAfterIndividualCheckFail( orderTd, oldInnerHTML );
+        updateAfterIndividualCheckFail( orderScoreTd, scoreTdOldInnerHTML, orderScoreMsgTd, scoreMsgTdOldInnerHTML );
         jQuery( '#wpbody-content .wrap ul' )
           .before( '<div id="autentify-notice" class="notice notice-error"><p>' + response['message'] + '</p></div>' );
       }
@@ -31,15 +33,17 @@ function startIndividualCheck( orderId, adminAjaxUrl ) {
   } );
 }
 
-function updateBeforeIndividual( orderTd ) {
-  orderTd.innerHTML = "Consultando...";
+function updateBeforeIndividual( orderScoreTd, orderScoreMsgTd ) {
+  orderScoreTd.innerHTML = "Consultando...";
+  orderScoreMsgTd.innerHTML = '<div class="autentify-check-status"><span>Aguarde</span></div>';
 }
 
-function updateAfterIndividualCheckFail( orderTd, oldInnerHTML ) {
-  orderTd.innerHTML = oldInnerHTML;
+function updateAfterIndividualCheckFail( orderScoreTd, scoreTdOldInnerHTML, orderScoreMsgTd, scoreMsgTdOldInnerHTML ) {
+  orderScoreTd.innerHTML = scoreTdOldInnerHTML;
+  orderScoreMsgTd.innerHTML = scoreMsgTdOldInnerHTML;
 }
 
-function updateAfterIndividualCheckSuccess( orderId, orderTd, autentiMail ) {
-  orderTd.innerHTML = autentiMail["risk_score_html"];
-  jQuery( `#post-${orderId} > td.column-autentify_autenti_mail_score_msg` )[0].innerHTML = autentiMail["risk_score_msg_pt_br"];
+function updateAfterIndividualCheckSuccess( orderScoreTd, orderScoreMsgTd, autentiMail ) {
+  orderScoreTd.innerHTML = autentiMail["risk_score_html"];
+  orderScoreMsgTd.innerHTML = autentiMail["risk_score_msg_pt_br"];
 }
