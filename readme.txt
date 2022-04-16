@@ -1,7 +1,7 @@
 === Autentify anti fraud for WooCommerce ===
-Contributors: autentify, joaovitorbarbosa
+Contributors: autentify
 Tags: fraud, antifraud, woocommerce, safety, artificial, intelligence, analyze
-Stable tag: 1.0.3
+Stable tag: 2.0.0
 Requires at least: 4.7
 Tested up to: 5.5
 Requires PHP: 5.6
@@ -23,11 +23,11 @@ Nosso algoritmo de pontuação exclusivo rastreia e analisa diversos atributos, 
 
 = Verificação de identidade =
 
-Utilize nossa validação biométrica facial como etapas extras de verificação. O nível de impacto no usuário pode ser personalizado e ajustável com base na pontuação que cada usuário recebe.
+Utilize nossas outras verificações como o AutentiD (checagem de dados cadastrais) ou AutentiFace (validação biométrica facial) como etapas extras de verificação. O nível de impacto no usuário pode ser personalizado e ajustável com base na pontuação que cada usuário recebe.
 
 = Preços =
 
-O AUTENTIFY é um serviço pré-pago com preços flexíveis com base no número de consultas recebidas por mês. Uma conta AUTENTIFY separada é necessária para liberação do token e utilização das consultas. Após o período de teste gratuito de 30 dias, o preço começa em R$ 49,90 por mês. Para obter mais informações sobre preços, visite https://www.autentify.com.br/precos.
+O AUTENTIFY é um serviço pré-pago com preços flexíveis com base no número de consultas recebidas por mês. Uma conta AUTENTIFY separada é necessária para liberação do token e utilização das consultas. Após o período de teste gratuito de 7 dias, o preço começa em R$ 199,90 por mês. Para obter mais informações, visite https://www.autentify.com.br.
 
 == Installation ==
 
@@ -39,7 +39,7 @@ O AUTENTIFY é um serviço pré-pago com preços flexíveis com base no número 
 
 = Requerimentos: =
 
-É necessário possuir uma conta no [Autentify](http://www.autentify.com.br/) e ter instalado o [WooCommerce](https://wordpress.org/plugins/woocommerce/).
+É necessário possuir uma conta no [Autentify](https://www.autentify.com.br) e ter instalado o [WooCommerce](https://wordpress.org/plugins/woocommerce/).
 Apenas com isso já é possível fazer consultas e receber o retorno automático de dados.
 
 * PHP versão 5.6 ou mais recente
@@ -72,6 +72,9 @@ Este plugin esta licenciado como GPL.
 Por favor, caso você tenha algum problema com o funcionamento do plugin, [abra um tópico no fórum do plugin](https://wordpress.org/support/plugin/autentify-anti-fraud-for-woocommerce/).
 
 == Changelog ==
+
+= 2.0.0 - 2021-01-07 =
+* Remake the plugin using the Autentify API 2.0.
 
 = 1.0.3 - 2021-01-07 =
 * Change the point to call Autentify_Api and Autentify_Auth classes.
