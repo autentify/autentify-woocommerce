@@ -22,7 +22,7 @@ class Autentify_Autenti_Mail {
    * @return Autentify_Autenti_Mail The created instance.
    */
   public static function with_encoded_json( $encoded_json ) {
-    $instance = new self($encoded_json->email, $encoded_json->cpf);
+    $instance = property_exists( $encoded_json, 'cpf' ) ? new self( $encoded_json->email, $encoded_json->cpf ) : new self( $encoded_json->email );
     $instance->id = $encoded_json->id;
     $instance->risk_score = $encoded_json->risk_score;
     $instance->risk_score_msg = $encoded_json->risk_score_msg;

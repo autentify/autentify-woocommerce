@@ -61,7 +61,7 @@ class Autentify_Plugin {
 				$has_autenti_mail = isset( $autenti_mail_post_meta ) && !empty( $autenti_mail_post_meta );
 
 				// Adds waiting status when the check was requested more than AUTENTIFY_CHECK_TIMEOUT seconds ago.
-				if ( $has_autenti_mail && $autenti_mail_post_meta->status == 202 && ($autenti_mail_post_meta->created_at + AUTENTIFY_CHECK_TIMEOUT) > Time() ) {
+				if ( $has_autenti_mail && property_exists( $autenti_mail_post_meta, 'status') && $autenti_mail_post_meta->status == 202 && ($autenti_mail_post_meta->created_at + AUTENTIFY_CHECK_TIMEOUT) > Time() ) {
 					if ( $column == 'autentify_autenti_mail_score' ) {
 						echo "Consultando...";
 					} elseif ( $column == 'autentify_autenti_mail_score_msg' ) {
