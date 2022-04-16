@@ -3,8 +3,9 @@ Contributors: autentify
 Tags: fraud, antifraud, woocommerce, safety, artificial, intelligence, analyze
 Stable tag: 2.0.0
 Requires at least: 4.7
-Tested up to: 5.5
-Requires PHP: 5.6
+Tested up to: 5.9.3
+PHP requires at least: 5.6
+PHP Tested up to: 8.1
 WC requires at least: 3.3
 WC tested up to: 4.5.2
 License: GPLv3
