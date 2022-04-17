@@ -25,7 +25,7 @@ class Autentify_Autenti_Mail_Helper {
     if ( empty( $cpf ) ) return $cpf;
 
     $cpf = preg_replace( "/[^0-9]/", "", $cpf );
-    $cpf = strval( (int) $cpf );
+    $cpf = ltrim( $cpf, "0" );
     
     return $cpf;
   }
