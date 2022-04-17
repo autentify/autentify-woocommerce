@@ -15,7 +15,7 @@ if ( ! function_exists( 'autentify_autenti_mail_post' ) ) {
 
     $order_id = sanitize_text_field( $_REQUEST['param1'] );
     $order = wc_get_order( $order_id );
-    $autenti_mail = new Autentify_Autenti_Mail( $order->get_billing_email(), $order->billing_cpf );
+    $autenti_mail = new Autentify_Autenti_Mail( $order->get_billing_email(), get_post_meta( $order->get_id(), '_billing_cpf', true ) );
 
     if ( ! $autenti_mail->has_valid_email() ) {
       $response['success'] = false;
@@ -55,7 +55,7 @@ if ( get_option( 'autentify_auto_order_check' ) == 'true' ) {
   if ( ! function_exists( 'autentify_autenti_mail_check' ) ) {
     function autentify_autenti_mail_check( $order_id ) {
       $order = wc_get_order( $order_id );
-      $autenti_mail = new Autentify_Autenti_Mail( $order->get_billing_email(), $order->billing_cpf );
+      $autenti_mail = new Autentify_Autenti_Mail( $order->get_billing_email(), get_post_meta( $order->get_id(), '_billing_cpf', true ) );
 
       if ( ! $autenti_mail->has_valid_email() ) return;
 
