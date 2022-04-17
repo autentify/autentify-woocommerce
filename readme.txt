@@ -74,7 +74,7 @@ Por favor, caso você tenha algum problema com o funcionamento do plugin, [abra 
 
 == Changelog ==
 
-= 2.0.0 - 2021-01-07 =
+= 2.0.0 - 2022-04-16 =
 * Remake the plugin using the Autentify API 2.0.
 
 = 1.0.3 - 2021-01-07 =
