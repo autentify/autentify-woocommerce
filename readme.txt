@@ -1,7 +1,7 @@
 === Autentify anti fraud for WooCommerce ===
 Contributors: autentify
 Tags: fraud, antifraud, woocommerce, safety, artificial, intelligence, analyze
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 Requires at least: 4.7
 Tested up to: 5.9.3
 PHP requires at least: 5.6
@@ -73,6 +73,9 @@ Este plugin esta licenciado como GPL.
 Por favor, caso você tenha algum problema com o funcionamento do plugin, [abra um tópico no fórum do plugin](https://wordpress.org/support/plugin/autentify-anti-fraud-for-woocommerce/).
 
 == Changelog ==
+
+= 2.0.1 - 2022-04-18 =
+* Fix to not use the AutentiMail check when the order already has an AutentiMail.
 
 = 2.0.0 - 2022-04-16 =
 * Remake the plugin using the Autentify API 2.0.
