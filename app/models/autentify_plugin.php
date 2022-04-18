@@ -58,7 +58,7 @@ class Autentify_Plugin {
 				$admin_ajax_url = admin_url( "admin-ajax.php" );
 
 				$autenti_mail_post_meta = get_post_meta( $order->get_id(), 'autenti_mail', true );
-				$has_autenti_mail = isset( $autenti_mail_post_meta ) && !empty( $autenti_mail_post_meta );
+				$has_autenti_mail = isset( $autenti_mail_post_meta ) && ! empty( $autenti_mail_post_meta );
 
 				// Adds waiting status when the check was requested more than AUTENTIFY_CHECK_TIMEOUT seconds ago.
 				if ( $has_autenti_mail && property_exists( $autenti_mail_post_meta, 'status') && $autenti_mail_post_meta->status == 202 && ($autenti_mail_post_meta->created_at + AUTENTIFY_CHECK_TIMEOUT) > Time() ) {

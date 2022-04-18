@@ -14,6 +14,18 @@ if ( ! function_exists( 'autentify_autenti_mail_post' ) ) {
     }
 
     $order_id = sanitize_text_field( $_REQUEST['param1'] );
+
+    $autenti_mail_post_meta = get_post_meta( $order_id, 'autenti_mail', true );
+    $has_autenti_mail = isset( $autenti_mail_post_meta ) && ! empty( $autenti_mail_post_meta );
+
+    if ( ($has_autenti_mail && ! property_exists( $autenti_mail_post_meta, 'status')) ||
+        ($has_autenti_mail && property_exists( $autenti_mail_post_meta, 'status') && $autenti_mail_post_meta->status == 202 && ($autenti_mail_post_meta->created_at + AUTENTIFY_CHECK_TIMEOUT) > Time()) ) {
+      $response['success'] = false;
+      $response['message'] = 'Consulta em andamento.';
+      echo json_encode( $response );
+      die();
+    }
+
     $order = wc_get_order( $order_id );
     $autenti_mail = new Autentify_Autenti_Mail( $order->get_billing_email(), get_post_meta( $order->get_id(), '_billing_cpf', true ) );
 
@@ -54,6 +66,14 @@ if ( ! function_exists( 'autentify_autenti_mail_post' ) ) {
 if ( get_option( 'autentify_auto_order_check' ) == 'true' ) {
   if ( ! function_exists( 'autentify_autenti_mail_check' ) ) {
     function autentify_autenti_mail_check( $order_id ) {
+      $autenti_mail_post_meta = get_post_meta( $order_id, 'autenti_mail', true );
+      $has_autenti_mail = isset( $autenti_mail_post_meta ) && ! empty( $autenti_mail_post_meta );
+
+    if ( ($has_autenti_mail && ! property_exists( $autenti_mail_post_meta, 'status')) ||
+        ($has_autenti_mail && property_exists( $autenti_mail_post_meta, 'status') && $autenti_mail_post_meta->status == 202 && ($autenti_mail_post_meta->created_at + AUTENTIFY_CHECK_TIMEOUT) > Time()) ) {
+        return;
+      }
+
       $order = wc_get_order( $order_id );
       $autenti_mail = new Autentify_Autenti_Mail( $order->get_billing_email(), get_post_meta( $order->get_id(), '_billing_cpf', true ) );
 
