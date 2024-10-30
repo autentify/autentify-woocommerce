@@ -82,7 +82,7 @@ class Autentify_Autenti_Mail {
         break;
     }
 
-    $translated_risk_score_html = '<div class="autentify-check-status '
+    $translated_risk_score_html = '<div class="autentify-analysis-status '
         . $status_css_class . '">'
         . '<span>' . $translated_risk_score_msg . '</span></div>';
 

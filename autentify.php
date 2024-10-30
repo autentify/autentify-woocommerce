@@ -6,12 +6,12 @@
  * Plugin Name:       		Autentify anti fraud for WooCommerce
  * Plugin URI:        		https://www.autentify.com.br/plugins/woocommerce/
  * Description:       		O melhor plugin para combater antifraude em e-commerces. Ágil e inteligente para analisar dados usando interligência artificial de forma avançada para definir o risco de cada venda em tempo real.
- * Version:           		2.0.1
+ * Version:           		2.1.1
  * Requires at least: 		4.7
- * Tested up to: 					5.6
+ * Tested up to: 					6.6.2
  * Requires PHP:      		5.6
  * WC requires at least: 	3.3
- * WC tested up to: 			4.8
+ * WC tested up to: 			8.2.3
  * Author:            		Autentify
  * Author URI:        		https://autentify.com.br/
  * License:           		GPL v3 or later
@@ -60,6 +60,28 @@ require_once( AUTENTIFY_PATH . 'includes/admin-menu.php');
 require_once( AUTENTIFY_PATH . 'includes/autentify_activator.php' );
 require_once( AUTENTIFY_PATH . 'includes/autentify_deactivator.php' );
 
+require_once( AUTENTIFY_PATH . 'includes/autenti_commerce/controllers/autentify_autenti_commerce_controller.php' );
+
+require_once( AUTENTIFY_PATH . 'includes/autenti_commerce/services/autentify_autenti_commerce_client.php' );
+require_once( AUTENTIFY_PATH . 'includes/autenti_commerce/services/autentify_autenti_commerce_status_updater_service.php' );
+
+require_once( AUTENTIFY_PATH . 'includes/autenti_commerce/models/autentify_autenti_commerce.php' );
+require_once( AUTENTIFY_PATH . 'includes/autenti_commerce/models/autentify_autenti_commerce_order.php' );
+require_once( AUTENTIFY_PATH . 'includes/autenti_commerce/models/autentify_autenti_commerce_customer.php' );
+require_once( AUTENTIFY_PATH . 'includes/autenti_commerce/models/autentify_autenti_commerce_address.php' );
+require_once( AUTENTIFY_PATH . 'includes/autenti_commerce/models/autentify_autenti_commerce_item.php' );
+require_once( AUTENTIFY_PATH . 'includes/autenti_commerce/models/autentify_autenti_commerce_payment.php' );
+require_once( AUTENTIFY_PATH . 'includes/autenti_commerce/models/autentify_autenti_commerce_phone.php' );
+require_once( AUTENTIFY_PATH . 'includes/autenti_commerce/models/autentify_autenti_commerce_document.php' );
+
+require_once( AUTENTIFY_PATH . 'includes/autenti_commerce/builders/autentify_autenti_commerce_data_builder.php' );
+require_once( AUTENTIFY_PATH . 'includes/autenti_commerce/builders/autentify_autenti_commerce_order_builder.php' );
+require_once( AUTENTIFY_PATH . 'includes/autenti_commerce/builders/autentify_autenti_commerce_customer_builder.php' );
+require_once( AUTENTIFY_PATH . 'includes/autenti_commerce/builders/autentify_autenti_commerce_order_items_builder.php' );
+require_once( AUTENTIFY_PATH . 'includes/autenti_commerce/builders/autentify_autenti_commerce_shipping_address_builder.php' );
+
+require_once( AUTENTIFY_PATH . 'includes/autenti_commerce/helpers/autentify_autenti_commerce_helper.php' );
+
 if ( ! version_compare( PHP_VERSION, '5.6', '>=' ) ) {
 	add_action( 'admin_notices', 'autentify_fail_php_version' );
 } elseif ( ! version_compare( get_bloginfo( 'version' ), '4.7', '>=' ) ) {
@@ -81,7 +103,10 @@ if ( ! version_compare( PHP_VERSION, '5.6', '>=' ) ) {
 	require_once( AUTENTIFY_PATH . 'app/daos/autentify_autenti_mail_dao.php' );
 	
 	require_once( AUTENTIFY_PATH . 'includes/user_roles.php' );
+
 	require_once( AUTENTIFY_PATH . 'app/actions/autentify_autenti_mail_actions.php' );
+	require_once( AUTENTIFY_PATH . 'app/actions/autentify_autenti_commerce_actions.php' );
+
 	require( AUTENTIFY_PATH . 'app/models/autentify_plugin.php' );
 
 	define( 'AUTENTIFY_CHECK_TIMEOUT', 180 );

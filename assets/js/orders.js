@@ -35,7 +35,7 @@ function startIndividualCheck( orderId, adminAjaxUrl ) {
 
 function updateBeforeIndividual( orderScoreTd, orderScoreMsgTd ) {
   orderScoreTd.innerHTML = "Consultando...";
-  orderScoreMsgTd.innerHTML = '<div class="autentify-check-status"><span>Aguarde</span></div>';
+  orderScoreMsgTd.innerHTML = '<div class="autentify-analysis-status"><span>Aguarde</span></div>';
 }
 
 function updateAfterIndividualCheckFail( orderScoreTd, scoreTdOldInnerHTML, orderScoreMsgTd, scoreMsgTdOldInnerHTML ) {

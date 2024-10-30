@@ -39,9 +39,14 @@ function autentify_api_token_validate( $input ) {
 					. 'www.painel.autentify.com.br/developers/api_token</a>';
 			$type = 'error';
 			$code = 'invalid_autentify_api_token';
-			add_settings_error( 'autentify_settings_notice', $code, $message, $type );
+		} else {
+			$message = "Autenticado com sucesso!";
+			$type = 'success';
+			$code = 'autentify_api_online';
 		}
 	}
+
+	add_settings_error( 'autentify_settings_notice', $code, $message, $type );
 
 	return $new_api_token_value;
 }

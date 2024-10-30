@@ -54,6 +54,10 @@ class Autentify_Api {
         return 'E-mail inválido.';
       case 17:
         return 'CPF inválido.';
+      case 18:
+        return 'ID inválido.';
+      case 19:
+        return 'Tempo excedido.';
       default:
         return 'Erro não identificado. Por favor, Espere alguns minutos e tente novamente.';
     }

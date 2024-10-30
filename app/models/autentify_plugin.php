@@ -24,7 +24,12 @@ class Autentify_Plugin {
 			function autentify_admin_orders_script( $hook ) {
 				if ( $hook != "edit.php" ) return;
 				wp_enqueue_script( 'autentify_admin_orders_script', AUTENTIFY_ASSETS_URL . 'js/orders.js', array( 'jquery' ), '', true );
+				wp_enqueue_script( 'autentify_admin_autenti_commerce_script', AUTENTIFY_ASSETS_URL . 'js/autenti_commerce.js', array( 'jquery' ), '', true );
         wp_enqueue_style( 'autentify_admin_orders_style', AUTENTIFY_ASSETS_URL . 'css/order.css', array());
+
+				wp_localize_script('autentify_admin_autenti_commerce_script', 'autentify_ajax', [
+					'ajax_url' => admin_url('admin-ajax.php')
+				]);
 			}
 			add_action( 'admin_enqueue_scripts', 'autentify_admin_orders_script' );
 		}
@@ -38,7 +43,8 @@ class Autentify_Plugin {
 				unset( $new_columns['order_total'] );
 
 				$new_columns['autentify_autenti_mail_score'] = 'AutentiMail Score';
-				$new_columns['autentify_autenti_mail_score_msg'] = 'Classificação de Risco';
+				$new_columns['autentify_autenti_mail_score_msg'] = 'AutentiMail Risco';
+				$new_columns['autentify_autenti_commerce_status'] = 'Antifraude';
 				$new_columns['order_actions'] = $columns['order_actions'];
 				$new_columns['order_total'] = 'Total';
 
@@ -54,36 +60,67 @@ class Autentify_Plugin {
 				global $post;
 
 				$order = wc_get_order( $post->ID );
+
 				$email = $order->get_billing_email();
 				$admin_ajax_url = admin_url( "admin-ajax.php" );
 
-				$autenti_mail_post_meta = get_post_meta( $order->get_id(), 'autenti_mail', true );
-				$has_autenti_mail = isset( $autenti_mail_post_meta ) && ! empty( $autenti_mail_post_meta );
-
-				// Adds waiting status when the check was requested more than AUTENTIFY_CHECK_TIMEOUT seconds ago.
-				if ( $has_autenti_mail && property_exists( $autenti_mail_post_meta, 'status') && $autenti_mail_post_meta->status == 202 && ($autenti_mail_post_meta->created_at + AUTENTIFY_CHECK_TIMEOUT) > Time() ) {
-					if ( $column == 'autentify_autenti_mail_score' ) {
-						echo "Consultando...";
-					} elseif ( $column == 'autentify_autenti_mail_score_msg' ) {
-						echo '<div class="autentify-check-status"><span>Aguarde</span></div>';
-					}
-				} elseif ( $has_autenti_mail && ! isset( $autenti_mail_post_meta->status ) ) {
-					$autenti_mail = Autentify_Autenti_Mail::with_encoded_json($autenti_mail_post_meta);
-					if ( $column == 'autentify_autenti_mail_score' ) {
-						echo $autenti_mail->get_risk_score_html();
-					} elseif ( $column == 'autentify_autenti_mail_score_msg' ) {
-						echo $autenti_mail->get_risk_score_msg_pt_br();
-					}
-				} else {
-					if ( $column == 'autentify_autenti_mail_score' ) {
-						$autenti_mail = new Autentify_Autenti_Mail( $email );
-						echo $autenti_mail->get_check_btn_in_html( $order->get_id(), $admin_ajax_url );
-					} elseif ( $column == 'autentify_autenti_mail_score_msg' ) {
-						echo '<div class="autentify-check-status"><span>Não Solicitada</span></div>';
-					}
-				}
+				Autentify_Plugin::set_autenti_mail_order_columns($column, $order, $email, $admin_ajax_url);
+				Autentify_Plugin::set_autenti_commerce_order_columns($column, $order, $admin_ajax_url);
 			}
 			add_action( 'manage_shop_order_posts_custom_column', 'autentify_set_order_column_values', 2 );
 		}
 	}
+
+	public static function set_autenti_mail_order_columns($column, $order, $email, $admin_ajax_url) {
+		$autenti_mail_post_meta = get_post_meta( $order->get_id(), 'autenti_mail', true );
+		$has_autenti_mail = isset( $autenti_mail_post_meta ) && ! empty( $autenti_mail_post_meta );
+
+		// Adds waiting status when the check was requested more than AUTENTIFY_CHECK_TIMEOUT seconds ago.
+		if ( $has_autenti_mail && property_exists( $autenti_mail_post_meta, 'status') && $autenti_mail_post_meta->status == 202 && ($autenti_mail_post_meta->created_at + AUTENTIFY_CHECK_TIMEOUT) > Time() ) {
+			if ( $column == 'autentify_autenti_mail_score' ) {
+				echo "Consultando...";
+			} elseif ( $column == 'autentify_autenti_mail_score_msg' ) {
+				echo '<div class="autentify-analysis-status"><span>Aguarde</span></div>';
+			}
+		} elseif ( $has_autenti_mail && ! isset( $autenti_mail_post_meta->status ) ) {
+			$autenti_mail = Autentify_Autenti_Mail::with_encoded_json($autenti_mail_post_meta);
+			if ( $column == 'autentify_autenti_mail_score' ) {
+				echo $autenti_mail->get_risk_score_html();
+			} elseif ( $column == 'autentify_autenti_mail_score_msg' ) {
+				echo $autenti_mail->get_risk_score_msg_pt_br();
+			}
+		} else {
+			if ( $column == 'autentify_autenti_mail_score' ) {
+				$autenti_mail = new Autentify_Autenti_Mail( $email );
+				echo $autenti_mail->get_check_btn_in_html( $order->get_id(), $admin_ajax_url );
+			} elseif ( $column == 'autentify_autenti_mail_score_msg' ) {
+				echo '<div class="autentify-analysis-status"><span>Não Solicitada</span></div>';
+			}
+		}
+	}
+
+	public static function set_autenti_commerce_order_columns($column, $order, $admin_ajax_url) {
+		if ( $column != 'autentify_autenti_commerce_status' ) {
+			return;
+		}
+		
+		$autenti_commerce_post_meta = get_post_meta( $order->get_id(), 'autenti_commerce', true );
+		$has_autenti_commerce = isset( $autenti_commerce_post_meta ) && ! empty( $autenti_commerce_post_meta );
+
+		if ( $has_autenti_commerce ) {
+			$autenti_commerce = Autentify_Autenti_Commerce::with_encoded_json($autenti_commerce_post_meta);
+			
+			echo Autentify_Autenti_Commerce_Helper::get_instance()->get_status_html(
+        $autenti_commerce
+      );
+		} else {
+			$taxIdentifier = null;
+			$customer = null;
+			$autenti_commerce_order = null;
+
+			$autenti_commerce = new Autentify_Autenti_Commerce( $taxIdentifier, $customer, $autenti_commerce_order );
+			echo $autenti_commerce->get_check_btn_in_html( $order->get_id() );
+		}
+	}
+
 }

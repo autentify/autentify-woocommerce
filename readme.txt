@@ -1,13 +1,13 @@
 === Autentify anti fraud for WooCommerce ===
 Contributors: autentify
 Tags: fraud, antifraud, woocommerce, safety, artificial, intelligence, analyze
-Stable tag: 2.0.1
+Stable tag: 2.1.1
 Requires at least: 4.7
-Tested up to: 5.9.3
+Tested up to: 6.6.2
 PHP requires at least: 5.6
-PHP Tested up to: 8.1
+PHP Tested up to: 8.3
 WC requires at least: 3.3
-WC tested up to: 4.5.2
+WC tested up to: 8.2.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
