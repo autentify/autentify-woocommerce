@@ -1,6 +1,6 @@
 === Autentify anti fraud for WooCommerce ===
 Contributors: autentify
-Tags: fraud, antifraud, woocommerce, safety, artificial, intelligence, analyze
+Tags: fraud, antifraud, woocommerce, safety, artificial
 Stable tag: 2.1.1
 Requires at least: 4.7
 Tested up to: 6.6.2
