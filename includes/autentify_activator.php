@@ -11,5 +11,5 @@ register_activation_hook( AUTENTIFY__FILE__, 'autentify_insert_options' );
  */
 function autentify_insert_options() {
 	add_option( "autentify_api_token" );
-	add_option( "autentify_auto_order_check", "true" );
+	// add_option( "autentify_auto_order_check", "true" ); // Disabled AutentiMail
 }

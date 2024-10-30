@@ -10,7 +10,7 @@ if ( ! function_exists( 'autentify_create_settings_menu' ) ) {
 if ( ! function_exists( 'register_autentify_settings' ) ) {
 	function register_autentify_settings() {
 		register_setting( 'autentify_settings_group', 'autentify_api_token', 'autentify_api_token_validate' );
-		register_setting( 'autentify_settings_group', 'autentify_auto_order_check', 'autentify_auto_order_check_validate' );
+		// register_setting( 'autentify_settings_group', 'autentify_auto_order_check', 'autentify_auto_order_check_validate' );  // Disabled AutentiMail
 	}
 }
 
@@ -99,13 +99,14 @@ if ( ! function_exists( 'autentify_settings_form_func' ) ) {
 						</a>
 					</td>
 				</tr>
-				<tr valign="top">
+				<!-- Disabled AutentiMail -->
+				<!-- <tr valign="top">
 					<th scope="row" style="padding-bottom: 0px;">
 						Consultar automaticamente
 					</th>
 					<td style="padding-bottom: 0px;">
 						<input type="checkbox" name="autentify_auto_order_check" class="checkbox"
-								<?php echo esc_attr( get_option( 'autentify_auto_order_check' ) == "true" ? "checked" : "" ); ?> />
+								<?php //echo esc_attr( get_option( 'autentify_auto_order_check' ) == "true" ? "checked" : "" ); ?> />
 					</td>
 				</tr>
 				<tr valign="top">
@@ -113,7 +114,7 @@ if ( ! function_exists( 'autentify_settings_form_func' ) ) {
 						Se a opção acima estiver selecionada, as consultas serão feitas automaticamente <br />
 						quando o pedido receber o status "processando".
 					</td>
-				</tr>
+				</tr> -->
 			</table>
 			<?php submit_button(); ?>
 		</form>

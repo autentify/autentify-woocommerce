@@ -42,8 +42,8 @@ class Autentify_Plugin {
 				unset( $new_columns['order_actions'] );
 				unset( $new_columns['order_total'] );
 
-				$new_columns['autentify_autenti_mail_score'] = 'AutentiMail Score';
-				$new_columns['autentify_autenti_mail_score_msg'] = 'AutentiMail Risco';
+				// $new_columns['autentify_autenti_mail_score'] = 'AutentiMail Score'; // Disabled AutentiMail
+				// $new_columns['autentify_autenti_mail_score_msg'] = 'AutentiMail Risco'; // Disabled AutentiMail
 				$new_columns['autentify_autenti_commerce_status'] = 'Antifraude';
 				$new_columns['order_actions'] = $columns['order_actions'];
 				$new_columns['order_total'] = 'Total';
@@ -61,10 +61,10 @@ class Autentify_Plugin {
 
 				$order = wc_get_order( $post->ID );
 
-				$email = $order->get_billing_email();
+				// $email = $order->get_billing_email(); // Disabled AutentiMail
 				$admin_ajax_url = admin_url( "admin-ajax.php" );
 
-				Autentify_Plugin::set_autenti_mail_order_columns($column, $order, $email, $admin_ajax_url);
+				// Autentify_Plugin::set_autenti_mail_order_columns($column, $order, $email, $admin_ajax_url); // Disabled AutentiMail
 				Autentify_Plugin::set_autenti_commerce_order_columns($column, $order, $admin_ajax_url);
 			}
 			add_action( 'manage_shop_order_posts_custom_column', 'autentify_set_order_column_values', 2 );
