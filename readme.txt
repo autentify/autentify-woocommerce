@@ -31,6 +31,9 @@ Utilize nossas outras verificações como o AutentiD (checagem de dados cadastra
 
 O AUTENTIFY é um serviço pré-pago com preços flexíveis com base no número de consultas recebidas por mês. Uma conta AUTENTIFY separada é necessária para liberação do token e utilização das consultas. Após o período de teste gratuito de 7 dias, o preço começa em R$ 199,90 por mês. Para obter mais informações, visite https://www.autentify.com.br.
 
+== Short Description ==
+Anti-fraude em tempo real para e-commerces, protegendo transações e auxiliando na tomada de decisões seguras.
+
 == Installation ==
 
 = Instalação do plugin: =
