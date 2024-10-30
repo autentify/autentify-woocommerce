@@ -1,7 +1,8 @@
 === Autentify anti fraud for WooCommerce ===
+Description: Anti-fraude em tempo real para e-commerces, protegendo transações e auxiliando na tomada de decisões seguras.
 Contributors: autentify
-Tags: fraud, antifraud, woocommerce, safety, artificial
-Stable tag: 2.1.1
+Tags: Fraud Prevention, E-commerce Security, Payment Protection, WooCommerce Anti-Fraud, Risk Management Plugin
+Stable tag: 2.1.2
 Requires at least: 4.7
 Tested up to: 6.6.2
 PHP requires at least: 5.6
