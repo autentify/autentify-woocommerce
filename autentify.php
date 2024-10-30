@@ -5,8 +5,8 @@
 /**
  * Plugin Name:       		Autentify anti fraud for WooCommerce
  * Plugin URI:        		https://www.autentify.com.br/plugins/woocommerce/
- * Description:       		O melhor plugin para combater antifraude em e-commerces. Ágil e inteligente para analisar dados usando interligência artificial de forma avançada para definir o risco de cada venda em tempo real.
- * Version:           		2.1.1
+ * Description:       		Anti-fraude em tempo real para e-commerces, protegendo transações e auxiliando na tomada de decisões seguras.
+ * Version:           		2.1.2
  * Requires at least: 		4.7
  * Tested up to: 					6.6.2
  * Requires PHP:      		5.6
