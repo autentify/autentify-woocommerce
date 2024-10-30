@@ -25,7 +25,7 @@ class Autentify_Autenti_Commerce_Controller {
         $autenti_commerce_data = (new Autentify_Autenti_Commerce_Data_Builder($order_id))->build();
 
         $autenti_commerce_client = Autentify_Autenti_Commerce_Client::get_instance();
-        $autenti_commerce_response = $autenti_commerce_client->initiate_analysis( $order_id, $autenti_commerce_data );
+        $autenti_commerce_response = $autenti_commerce_client->initiate_analysis( $autenti_commerce_data );
 
         $response['success'] = $autenti_commerce_response->status == '201';
         $response['message'] = '';

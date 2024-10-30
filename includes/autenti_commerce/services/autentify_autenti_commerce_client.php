@@ -17,7 +17,7 @@ class Autentify_Autenti_Commerce_Client {
     return self::$instance;
   }
 
-  public function initiate_analysis( $order_id, $autenti_commerce_data) {
+  public function initiate_analysis( $autenti_commerce_data) {
 		$url = $this->api->get_base_url() . '/v2/autenti_commerces';
 
 		$args = array(
@@ -35,6 +35,7 @@ class Autentify_Autenti_Commerce_Client {
       $response = wp_remote_post( $url, $args );
       $body = json_decode( wp_remote_retrieve_body( $response ) );
     } catch (Exception $e) {
+      error_log("\n\n\initiate_analysis 2\n\n\n");
       // delete_post_meta( $order_id, 'autenti_commerce' );
     }
 
