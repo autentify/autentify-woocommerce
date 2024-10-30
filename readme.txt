@@ -2,7 +2,7 @@
 Description: Anti-fraude em tempo real para e-commerces, protegendo transações e auxiliando na tomada de decisões seguras.
 Contributors: autentify
 Tags: Fraud Prevention, E-commerce Security, Payment Protection, WooCommerce Anti-Fraud, Risk Management Plugin
-Stable tag: 2.1.2
+Stable tag: 2.1.3
 Requires at least: 4.7
 Tested up to: 6.6.2
 PHP requires at least: 5.6
