@@ -15,7 +15,9 @@ if ( ! function_exists( 'autentify_autenti_mail_post' ) ) {
 
     $order_id = sanitize_text_field( $_REQUEST['param1'] );
 
-    $autenti_mail_post_meta = get_post_meta( $order_id, 'autenti_mail', true );
+    $order = wc_get_order( $order_id );
+
+    $autenti_mail_post_meta = $order->get_meta( 'autenti_mail', true );
     $has_autenti_mail = isset( $autenti_mail_post_meta ) && ! empty( $autenti_mail_post_meta );
 
     if ( ($has_autenti_mail && ! property_exists( $autenti_mail_post_meta, 'status')) ||
@@ -26,8 +28,8 @@ if ( ! function_exists( 'autentify_autenti_mail_post' ) ) {
       die();
     }
 
-    $order = wc_get_order( $order_id );
-    $autenti_mail = new Autentify_Autenti_Mail( $order->get_billing_email(), get_post_meta( $order->get_id(), '_billing_cpf', true ) );
+    $biling_cpf = $order->get_meta( '_billing_cpf', true );
+    $autenti_mail = new Autentify_Autenti_Mail( $order->get_billing_email(), $biling_cpf );
 
     if ( ! $autenti_mail->has_valid_email() ) {
       $response['success'] = false;
@@ -38,9 +40,9 @@ if ( ! function_exists( 'autentify_autenti_mail_post' ) ) {
 
     $autenti_mail_DAO = Autentify_Autenti_Mail_DAO::get_instance();
     if ( $autenti_mail->has_valid_cpf() ) {
-      $autenti_mail_response = $autenti_mail_DAO->check( $order_id, $autenti_mail->get_email(), $autenti_mail->get_cpf() );
+      $autenti_mail_response = $autenti_mail_DAO->check( $order, $autenti_mail->get_email(), $autenti_mail->get_cpf() );
     } else {
-      $autenti_mail_response = $autenti_mail_DAO->check( $order_id, $autenti_mail->get_email() );
+      $autenti_mail_response = $autenti_mail_DAO->check( $order, $autenti_mail->get_email() );
     }
 
     $response['success'] = $autenti_mail_response->status == '201';
@@ -53,7 +55,8 @@ if ( ! function_exists( 'autentify_autenti_mail_post' ) ) {
       $autentify_autenti_mail = Autentify_Autenti_Mail::with_encoded_json( $autenti_mail_response->autenti_mail );
       $response['autenti_mail'] = $autentify_autenti_mail->to_json();
 
-      update_post_meta( $order_id, 'autenti_mail', $autenti_mail_response->autenti_mail );
+      $order->update_meta_data( 'autenti_mail', $autenti_mail_response->autenti_mail );
+      $order->save();
     }
 
     echo json_encode( $response );
@@ -66,7 +69,8 @@ if ( ! function_exists( 'autentify_autenti_mail_post' ) ) {
 if ( get_option( 'autentify_auto_order_check' ) == 'true' ) {
   if ( ! function_exists( 'autentify_autenti_mail_check' ) ) {
     function autentify_autenti_mail_check( $order_id ) {
-      $autenti_mail_post_meta = get_post_meta( $order_id, 'autenti_mail', true );
+      $order = wc_get_order( $order_id );
+      $autenti_mail_post_meta = $order->get_meta( 'autenti_mail', true );
       $has_autenti_mail = isset( $autenti_mail_post_meta ) && ! empty( $autenti_mail_post_meta );
 
     if ( ($has_autenti_mail && ! property_exists( $autenti_mail_post_meta, 'status')) ||
@@ -75,19 +79,20 @@ if ( get_option( 'autentify_auto_order_check' ) == 'true' ) {
       }
 
       $order = wc_get_order( $order_id );
-      $autenti_mail = new Autentify_Autenti_Mail( $order->get_billing_email(), get_post_meta( $order->get_id(), '_billing_cpf', true ) );
+      $autenti_mail = new Autentify_Autenti_Mail( $order->get_billing_email(), $order->get_meta( '_billing_cpf', true ) );
 
       if ( ! $autenti_mail->has_valid_email() ) return;
 
       $autenti_mail_DAO = Autentify_Autenti_Mail_DAO::get_instance();
       if ( $autenti_mail->has_valid_cpf() ) {
-        $autenti_mail_response = $autenti_mail_DAO->check( $order_id, $autenti_mail->get_email(), $autenti_mail->get_cpf() );
+        $autenti_mail_response = $autenti_mail_DAO->check( $order, $autenti_mail->get_email(), $autenti_mail->get_cpf() );
       } else {
-        $autenti_mail_response = $autenti_mail_DAO->check( $order_id, $autenti_mail->get_email() );
+        $autenti_mail_response = $autenti_mail_DAO->check( $order, $autenti_mail->get_email() );
       }
 
       if ( isset( $autenti_mail_response->autenti_mail ) ) {
-        update_post_meta( $order_id, 'autenti_mail', $autenti_mail_response->autenti_mail );
+        $order->update_meta_data( 'autenti_mail', $autenti_mail_response->autenti_mail );
+        $order->save();
       }
     }
 

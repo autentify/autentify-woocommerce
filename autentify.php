@@ -4,14 +4,15 @@
  */
 /**
  * Plugin Name:       		Autentify anti fraud for WooCommerce
- * Plugin URI:        		https://www.autentify.com.br/plugins/woocommerce/
+ * Plugin URI:        		https://autentify.com.br/
  * Description:       		Anti-fraude em tempo real para e-commerces, protegendo transações e auxiliando na tomada de decisões seguras.
- * Version:           		2.1.3
+ * Version:           		2.2.0
  * Requires at least: 		4.7
  * Tested up to: 					6.6.2
  * Requires PHP:      		5.6
- * WC requires at least: 	3.3
+ * WC requires at least: 	7.1
  * WC tested up to: 			8.2.3
+ * Requires Plugins: 			woocommerce, woocommerce-extra-checkout-fields-for-brazil
  * Author:            		Autentify
  * Author URI:        		https://autentify.com.br/
  * License:           		GPL v3 or later
@@ -39,7 +40,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'AUTENTIFY_VERSION', '2.0.0' );
+define( 'AUTENTIFY_VERSION', '2.2.0' );
 
 define( 'AUTENTIFY__FILE__', __FILE__ );
 define( 'AUTENTIFY_PLUGIN_BASE', plugin_basename( AUTENTIFY__FILE__ ) );
@@ -52,6 +53,8 @@ define( 'AUTENTIFY_ASSETS_PATH', AUTENTIFY_PATH . 'assets/' );
 define( 'AUTENTIFY_ASSETS_URL', AUTENTIFY_URL . 'assets/' );
 
 define( 'AUTENTIFY_API_TOKEN', get_option( 'autentify_api_token' ) );
+
+add_action( 'before_woocommerce_init', 'setup_hpos_compatibility' );
 
 require_once( AUTENTIFY_PATH . 'app/models/autentify_api.php' );
 require_once( AUTENTIFY_PATH . 'app/models/autentify_auth.php' );
@@ -86,13 +89,9 @@ if ( ! version_compare( PHP_VERSION, '5.6', '>=' ) ) {
 	add_action( 'admin_notices', 'autentify_fail_php_version' );
 } elseif ( ! version_compare( get_bloginfo( 'version' ), '4.7', '>=' ) ) {
 	add_action( 'admin_notices', 'autentify_fail_wp_version' );
-} elseif ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) { // Check if WooCommerce is active
-	add_action( 'admin_notices', 'autentify_fail_woocommerce_deactivated' );
 } elseif ( ! defined('AUTENTIFY_API_TOKEN') || AUTENTIFY_API_TOKEN == "" ) {
 	add_action( 'admin_notices', 'autentify_fail_api_token_variable' );
 } else {
-	add_action('plugins_loaded', 'autentify_plugins_loaded_check', 0);
-
 	require_once( AUTENTIFY_PATH . 'app/helpers/autentify_email_helper.php' );
 	require_once( AUTENTIFY_PATH . 'app/helpers/autentify_cpf_helper.php' );
 	require_once( AUTENTIFY_PATH . 'app/helpers/autentify_score_helper.php' );
@@ -207,47 +206,18 @@ function autentify_fail_wp_version() {
 }
 
 /**
- * Autentify admin notice for WooCommerce plugin.
+ * Setups WooCommerce HPOS compatibility.
  *
- * Warning when the site doesn't have the WooCommerce plugin activated.
- *
- * @since 1.0.0
+ * @since 2.2.0
  *
  * @return void
  */
-function autentify_fail_woocommerce_deactivated() {
-	/* translators: %s: WooCommerce version */
-	$message = sprintf( esc_html__( 'Autentify requer o plugin do WooCommerce %s+ ativado. O plugin atualmente NÃO ESTÁ FUNCIONANDO.', 'autentify' ), '3.3' );
-	$html_message = sprintf( '<div class="notice notice-error is-dismissible">%s</div>', wpautop( $message ) );
-	echo wp_kses_post( $html_message );
-}
-
-/**
- * Autentify admin notice for WooCommerce Extra Checkout Fields For Brazil plugin.
- *
- * Warning when the site doesn't have the WooCommerce Extra Checkout Fields For Brazil plugin activated.
- *
- * @since 2.0.0
- *
- * @return void
- */
-function autentify_wecffb_deactivated() {
-	$message = 'Autentify requer o plugin '
-			. '<a href="https://wordpress.org/plugins/woocommerce-extra-checkout-fields-for-brazil/" target="_blank">'
-			. ' WooCommerce Extra Checkout Fields For Brazil</a> para consultar usando o CPF do cliente.';
-	$html_message = sprintf( '<div class="notice notice-warning is-dismissible">%s</div>', wpautop( $message ) );
-	echo wp_kses_post( $html_message );
-}
-
-/**
- * Adds an admin notice if the Extra Checkout Fields For Brazil plugin is not active.
- *
- * @since 2.0.0
- *
- * @return void
- */
-function autentify_plugins_loaded_check() {
-	if ( ! class_exists('Extra_Checkout_Fields_For_Brazil') ) {
-		add_action( 'admin_notices', 'autentify_wecffb_deactivated' );
+function setup_hpos_compatibility() {
+	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+			'custom_order_tables',
+			'autentify-wocommerce/autentify.php',
+			true
+		);
 	}
 }

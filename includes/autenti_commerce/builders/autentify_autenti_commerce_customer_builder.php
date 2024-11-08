@@ -13,8 +13,8 @@ class Autentify_Autenti_Commerce_Customer_Builder {
         $billing_first_name = $this->order->get_billing_first_name();
         $billing_last_name = $this->order->get_billing_last_name();
         $billing_email = $this->order->get_billing_email();
-        $birthdate = get_post_meta($this->order->get_id(), '_billing_birthdate', true);
-        $formatted_phone = get_post_meta($this->order->get_id(), '_billing_phone', true);
+        $birthdate = $this->order->get_meta( '_billing_birthdate', true );
+        $formatted_phone = $this->order->get_meta( '_billing_phone', true );
         
         $name = "$billing_first_name $billing_last_name";
         $documents = [new Autentify_Autenti_Commerce_Document('individual_tax', $this->tax_identifier)];

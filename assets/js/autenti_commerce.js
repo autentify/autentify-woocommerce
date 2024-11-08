@@ -3,7 +3,7 @@ function postAutentiCommerce( orderId ) {
 
   if ( ! confirmed ) return;
 
-  const path = `#post-${orderId} > td.column-autentify_autenti_commerce_status`;
+  const path = `#order-${orderId} > td.column-autentify_autenti_commerce_status`;
   const elements = document.querySelectorAll(path);
   const orderStatusTd = elements[0];
 
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   elements.forEach(function(element) {
     const orderRow = element.closest(".type-shop_order");
-    const orderId = orderRow.getAttribute('id').replace('post-', '');
+    const orderId = orderRow.getAttribute('id').replace('order-', '');
 
     if (!allowedToUpdateStatus(this.innerText)) {
       return true;

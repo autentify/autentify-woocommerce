@@ -9,8 +9,8 @@ class Autentify_Plugin {
 
   private function __construct() {
 		$this->load_js_files();
-		$this->set_order_columns();
-		$this->set_order_column_values();
+		$this->add_order_columns();
+		$this->add_order_column_values();
 	}
 
   public static function get_instance() {
@@ -20,9 +20,10 @@ class Autentify_Plugin {
   }
 
 	private function load_js_files() {
-		if ( isset($_GET['post_type']) && $_GET['post_type'] == 'shop_order' && ! function_exists( 'autentify_admin_orders_script' ) ) {
+		if ( isset( $_GET['page'] ) && $_GET['page'] === 'wc-orders' && ! function_exists( 'autentify_admin_orders_script' ) ) {
 			function autentify_admin_orders_script( $hook ) {
-				if ( $hook != "edit.php" ) return;
+				if ( $hook === 'admin.php') return;
+
 				wp_enqueue_script( 'autentify_admin_orders_script', AUTENTIFY_ASSETS_URL . 'js/orders.js', array( 'jquery' ), '', true );
 				wp_enqueue_script( 'autentify_admin_autenti_commerce_script', AUTENTIFY_ASSETS_URL . 'js/autenti_commerce.js', array( 'jquery' ), '', true );
         wp_enqueue_style( 'autentify_admin_orders_style', AUTENTIFY_ASSETS_URL . 'css/order.css', array());
@@ -35,9 +36,9 @@ class Autentify_Plugin {
 		}
 	}
 
-	private function set_order_columns(){
-		if ( ! function_exists( 'autentify_set_order_columns' ) ) {
-			function autentify_set_order_columns( $columns ) {
+	private function add_order_columns(){
+		if ( ! function_exists( 'add_autentify_order_columns' ) ) {
+			function add_autentify_order_columns( $columns ) {
 				$new_columns = ( is_array( $columns ) ) ? $columns : array();
 				unset( $new_columns['order_actions'] );
 				unset( $new_columns['order_total'] );
@@ -50,29 +51,23 @@ class Autentify_Plugin {
 
 				return $new_columns;
 			}
-			add_filter( 'manage_edit-shop_order_columns', 'autentify_set_order_columns' );
+			add_filter( 'woocommerce_shop_order_list_table_columns', 'add_autentify_order_columns' );
 		}
 	}
 
-	private function set_order_column_values() {
-		if ( ! function_exists( 'autentify_set_order_column_values' ) ) {
-			function autentify_set_order_column_values( $column ) {
-				global $post;
-
-				$order = wc_get_order( $post->ID );
-
+	private function add_order_column_values() {
+		if ( ! function_exists( 'add_autentify_order_column_values' ) ) {
+			function add_autentify_order_column_values( $column, $order ) {
 				// $email = $order->get_billing_email(); // Disabled AutentiMail
-				$admin_ajax_url = admin_url( "admin-ajax.php" );
-
 				// Autentify_Plugin::set_autenti_mail_order_columns($column, $order, $email, $admin_ajax_url); // Disabled AutentiMail
-				Autentify_Plugin::set_autenti_commerce_order_columns($column, $order, $admin_ajax_url);
+				Autentify_Plugin::set_autenti_commerce_order_columns($column, $order);
 			}
-			add_action( 'manage_shop_order_posts_custom_column', 'autentify_set_order_column_values', 2 );
+			add_action( 'woocommerce_shop_order_list_table_custom_column', 'add_autentify_order_column_values', 10, 2 );
 		}
 	}
 
 	public static function set_autenti_mail_order_columns($column, $order, $email, $admin_ajax_url) {
-		$autenti_mail_post_meta = get_post_meta( $order->get_id(), 'autenti_mail', true );
+		$autenti_mail_post_meta = $order->get_meta( 'autenti_mail', true );
 		$has_autenti_mail = isset( $autenti_mail_post_meta ) && ! empty( $autenti_mail_post_meta );
 
 		// Adds waiting status when the check was requested more than AUTENTIFY_CHECK_TIMEOUT seconds ago.
@@ -92,19 +87,19 @@ class Autentify_Plugin {
 		} else {
 			if ( $column == 'autentify_autenti_mail_score' ) {
 				$autenti_mail = new Autentify_Autenti_Mail( $email );
-				echo $autenti_mail->get_check_btn_in_html( $order->get_id(), $admin_ajax_url );
+				echo $autenti_mail->get_check_btn_in_html( $order->get_id() );
 			} elseif ( $column == 'autentify_autenti_mail_score_msg' ) {
 				echo '<div class="autentify-analysis-status"><span>Não Solicitada</span></div>';
 			}
 		}
 	}
 
-	public static function set_autenti_commerce_order_columns($column, $order, $admin_ajax_url) {
+	public static function set_autenti_commerce_order_columns($column, $order) {
 		if ( $column != 'autentify_autenti_commerce_status' ) {
 			return;
 		}
 		
-		$autenti_commerce_post_meta = get_post_meta( $order->get_id(), 'autenti_commerce', true );
+		$autenti_commerce_post_meta = $order->get_meta( 'autenti_commerce', true );
 		$has_autenti_commerce = isset( $autenti_commerce_post_meta ) && ! empty( $autenti_commerce_post_meta );
 
 		if ( $has_autenti_commerce ) {
@@ -122,5 +117,4 @@ class Autentify_Plugin {
 			echo $autenti_commerce->get_check_btn_in_html( $order->get_id() );
 		}
 	}
-
 }

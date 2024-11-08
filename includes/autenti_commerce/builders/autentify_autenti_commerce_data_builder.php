@@ -12,7 +12,7 @@ class Autentify_Autenti_Commerce_Data_Builder {
     }
 
     public function build() {
-        $tax_identifier = get_post_meta($this->order->get_id(), '_billing_cpf', true);
+        $tax_identifier = $this->order->get_meta( '_billing_cpf', true );
         $customer_builder = new Autentify_Autenti_Commerce_Customer_Builder($this->order, $tax_identifier);
         $customer = $customer_builder->build();
 

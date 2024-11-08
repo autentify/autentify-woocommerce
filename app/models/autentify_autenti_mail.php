@@ -118,9 +118,9 @@ class Autentify_Autenti_Mail {
    * if the email is isset and it is not empty.
    * @return String The values contains the button HTML.
    */
-  public function get_check_btn_in_html( $order_id, $admin_ajax_url ) {
+  public function get_check_btn_in_html( $order_id ) {
     $check_btn_with_email = "<a href='#' class='button button-primary'"
-        . "onclick='startIndividualCheck(\"$order_id\", \"$admin_ajax_url\")'>"
+        . "onclick='startIndividualCheck(\"$order_id\")'>"
         . "Iniciar Consulta</a>";
 
     if ( isset ( $this->email ) && ! empty( $this->email ) ) {

@@ -35,12 +35,11 @@ class Autentify_Autenti_Commerce_Client {
       $response = wp_remote_post( $url, $args );
       $body = json_decode( wp_remote_retrieve_body( $response ) );
     } catch (Exception $e) {
-      error_log("\n\n\initiate_analysis 2\n\n\n");
-      // delete_post_meta( $order_id, 'autenti_commerce' );
+      error_log("initiate_analysis catch error");
     }
 
     if ( is_wp_error( $response ) ) {
-      // delete_post_meta( $order_id, 'autenti_commerce' );
+      error_log("initiate_analysis response error");
     }
     
     return $body;
@@ -63,11 +62,11 @@ class Autentify_Autenti_Commerce_Client {
       $response = wp_remote_get( $url, $args );
       $body = json_decode( wp_remote_retrieve_body( $response ) );
     } catch (Exception $e) {
-      // delete_post_meta( $order_id, 'autenti_commerce' );
+      error_log("AutentiCommerce fetch catch error");
     }
 
     if ( is_wp_error( $response ) ) {
-      // delete_post_meta( $order_id, 'autenti_commerce' );
+      error_log("AutentiCommerce fetch response error");
     }
     
     return $body;

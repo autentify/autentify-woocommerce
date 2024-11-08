@@ -19,12 +19,12 @@ class Autentify_Autenti_Mail_DAO {
 
   /**
    * This method makes a POST in AutentiMail API to check the email and CPF.
-   * @param $order_id String/Integer the order id to initialize the autenti_mail on database.
+   * @param $order WC_Order the order to initialize the autenti_mail on database.
    * @param $email String that contains the email.
    * @param $cpf String that contains the CPF.
    * @return a success or an error object.
    */
-  public function check( $order_id, $email, $cpf = null) {
+  public function check( $order, $email, $cpf = null) {
     $curl = curl_init();
     
 		$url = $this->api->get_base_url() . '/v2/autenti_mails';
@@ -49,16 +49,20 @@ class Autentify_Autenti_Mail_DAO {
     $response = null;
     try {
       $pending = (object) array('status' => 202, 'created_at' => time());
-      update_post_meta( $order_id, 'autenti_mail', $pending );
+
+      $order->update_meta_data( 'autenti_mail', $pending );
+      $order->save();
 
       $response = wp_remote_post( $url, $args );
       $body = json_decode( wp_remote_retrieve_body( $response ) );
     } catch (Exception $e) {
-      delete_post_meta( $order_id, 'autenti_mail' );
+      $order->delete_meta_data( 'autenti_mail' );
+      $order->save();
     }
 
     if ( is_wp_error( $response ) ) {
-      delete_post_meta( $order_id, 'autenti_mail' );
+      $order->delete_meta_data( 'autenti_mail' );
+      $order->save();
     }
     
     return $body;

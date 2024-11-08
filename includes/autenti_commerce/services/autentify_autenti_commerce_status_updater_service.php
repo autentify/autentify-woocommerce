@@ -9,7 +9,7 @@ class Autentify_Autenti_Commerce_Status_Updater_Service {
         $this->autenti_commerce_client = Autentify_Autenti_Commerce_Client::get_instance();
     }
 
-    public function update($order_id) {
+    public function update($order) {
         if (!$this->autenti_commerce->can_update_status()) {
             return $this->autenti_commerce;
         }
@@ -23,7 +23,8 @@ class Autentify_Autenti_Commerce_Status_Updater_Service {
 		$updated_autenti_commerce = Autentify_Autenti_Commerce::with_encoded_json($response);
         $updated_autenti_commerce->update_status_updated_at();
 
-        update_post_meta($order_id, 'autenti_commerce', $updated_autenti_commerce->to_std_class());
+        $order->update_meta_data('autenti_commerce', $updated_autenti_commerce->to_std_class());
+        $order->save();
 
         return $updated_autenti_commerce;
     }

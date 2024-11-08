@@ -2,12 +2,12 @@
 Description: Anti-fraude em tempo real para e-commerces, protegendo transações e auxiliando na tomada de decisões seguras.
 Contributors: autentify
 Tags: Fraud Prevention, E-commerce Security, Payment Protection, WooCommerce Anti-Fraud, Risk Management Plugin
-Stable tag: 2.1.3
+Stable tag: 2.2.0
 Requires at least: 4.7
 Tested up to: 6.6.2
 PHP requires at least: 5.6
 PHP Tested up to: 8.3
-WC requires at least: 3.3
+WC requires at least: 7.1
 WC tested up to: 8.2.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -49,8 +49,8 @@ Apenas com isso já é possível fazer consultas e receber o retorno automático
 
 * PHP versão 5.6 ou mais recente
 * MySQL versão 5.0 ou mais recente
-* WordPress versão 4.7 ou mais recente
-* WooCommerce versão 3.3 ou mais recente
+* WordPress versão 6.6.2 ou mais recente
+* WooCommerce versão 7.1 ou mais recente
 
 == Screenshots ==
 

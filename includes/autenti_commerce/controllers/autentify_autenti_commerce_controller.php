@@ -14,7 +14,9 @@ class Autentify_Autenti_Commerce_Controller {
 
         $order_id = sanitize_text_field( $_REQUEST['param1'] );
 
-        $autenti_commerce_post_meta = get_post_meta( $order_id, 'autenti_commerce', true );
+        $order = wc_get_order( $order_id );
+        $autenti_commerce_post_meta = $order->get_meta( 'autenti_commerce', true );
+
         $has_autenti_commerce = isset( $autenti_commerce_post_meta ) && ! empty( $autenti_commerce_post_meta );
 
         if ( $has_autenti_commerce ) {
@@ -44,7 +46,8 @@ class Autentify_Autenti_Commerce_Controller {
                 $autenti_commerce
             );
 
-            update_post_meta( $order_id, 'autenti_commerce', $autenti_commerce_response->autenti_commerce );
+            $order->update_meta_data( 'autenti_commerce', $autenti_commerce_response->autenti_commerce );
+            $order->save();
         }
 
         echo json_encode( $response );
@@ -62,7 +65,8 @@ class Autentify_Autenti_Commerce_Controller {
     
         $order_id = sanitize_text_field( $_REQUEST['order_id'] );
 
-        $autenti_commerce_post_meta = get_post_meta( $order_id, 'autenti_commerce', true );
+        $order = wc_get_order( $order_id );
+        $autenti_commerce_post_meta = $order->get_meta( 'autenti_commerce', true );
 
         if ($autenti_commerce_post_meta === null || $autenti_commerce_post_meta === '') {
             die();
@@ -76,7 +80,7 @@ class Autentify_Autenti_Commerce_Controller {
             $autenti_commerce
         );
 
-		$updated_autenti_commerce = $status_updater_service->update( $order_id );
+		$updated_autenti_commerce = $status_updater_service->update( $order );
         $encoded_autenti_commerce = json_encode( $updated_autenti_commerce->to_json() );
 
         echo $encoded_autenti_commerce;

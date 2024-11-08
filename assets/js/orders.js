@@ -1,17 +1,17 @@
-function startIndividualCheck( orderId, adminAjaxUrl ) {
+function startIndividualCheck( orderId ) {
   var check = confirm( "Realmente deseja inicializar essa consulta?" );
 
   if ( ! check ) return;
 
-  var orderScoreTd = jQuery( `#post-${orderId} > td.column-autentify_autenti_mail_score` )[0];
+  var orderScoreTd = jQuery( `#order-${orderId} > td.column-autentify_autenti_mail_score` )[0];
   var scoreTdOldInnerHTML = orderScoreTd.innerHTML;
-  var orderScoreMsgTd = jQuery( `#post-${orderId} > td.column-autentify_autenti_mail_score_msg` )[0];
+  var orderScoreMsgTd = jQuery( `#order-${orderId} > td.column-autentify_autenti_mail_score_msg` )[0];
   var scoreMsgTdOldInnerHTML = orderScoreMsgTd.innerHTML;
   updateBeforeIndividual( orderScoreTd, orderScoreMsgTd );
 
   jQuery( "#autentify-notice" ).remove();
   jQuery.ajax( {
-    url : adminAjaxUrl,
+    url: autentify_ajax.ajax_url,
     type : 'POST',
     data : {
       action : 'autentify_autenti_mail_post',
