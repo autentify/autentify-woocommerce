@@ -6,7 +6,7 @@
  * Plugin Name:       		Autentify anti fraud for WooCommerce
  * Plugin URI:        		https://autentify.com.br/
  * Description:       		Anti-fraude em tempo real para e-commerces, protegendo transações e auxiliando na tomada de decisões seguras.
- * Version:           		2.2.0
+ * Version:           		2.2.1
  * Requires at least: 		4.7
  * Tested up to: 					6.6.2
  * Requires PHP:      		5.6
@@ -40,7 +40,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'AUTENTIFY_VERSION', '2.2.0' );
+define( 'AUTENTIFY_VERSION', '2.2.1' );
 
 define( 'AUTENTIFY__FILE__', __FILE__ );
 define( 'AUTENTIFY_PLUGIN_BASE', plugin_basename( AUTENTIFY__FILE__ ) );
