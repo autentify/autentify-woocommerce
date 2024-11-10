@@ -40,13 +40,11 @@ class Autentify_Plugin {
 		if ( ! function_exists( 'add_autentify_order_columns' ) ) {
 			function add_autentify_order_columns( $columns ) {
 				$new_columns = ( is_array( $columns ) ) ? $columns : array();
-				unset( $new_columns['order_actions'] );
 				unset( $new_columns['order_total'] );
 
 				// $new_columns['autentify_autenti_mail_score'] = 'AutentiMail Score'; // Disabled AutentiMail
 				// $new_columns['autentify_autenti_mail_score_msg'] = 'AutentiMail Risco'; // Disabled AutentiMail
 				$new_columns['autentify_autenti_commerce_status'] = 'Antifraude';
-				$new_columns['order_actions'] = $columns['order_actions'];
 				$new_columns['order_total'] = 'Total';
 
 				return $new_columns;
